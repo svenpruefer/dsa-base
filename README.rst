@@ -2,6 +2,9 @@
 dsa-base
 ========
 
+.. image:: https://img.shields.io/travis/svenpruefer/dsa-base.svg
+:target: https://travis-ci.org/svenpruefer/dsa-base
+
 A basic library written in scala for DSA characters and other elements from that universe.
 
 * Free software: GNU General Public License v3
