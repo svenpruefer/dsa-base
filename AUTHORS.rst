@@ -5,7 +5,7 @@ Credits
 Development Lead
 ----------------
 
-* Sven Pruefer <pruefer.sven@gmail.com>
+* Sven Prüfer <pruefer.sven@gmail.com>
 
 Contributors
 ------------
