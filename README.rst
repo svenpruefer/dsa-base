@@ -2,13 +2,12 @@
 dsa-base
 ========
 
-.. image:: https://img.shields.io/travis/svenpruefer/dsa-base.svg
-:target: https://travis-ci.org/svenpruefer/dsa-base
+.. image:: https://img.shields.io/travis/svenpruefer/quintilian.svg
+:target: https://travis-ci.org/svenpruefer/quintilian
 
-A basic library written in scala for DSA characters and other elements from that universe.
+A basic GUI tool to aid in playing Sven Prüfer's Quintilian character from "Das schwarze Auge".
 
 * Free software: GNU General Public License v3
-* Documentation: https://svenpruefer.github.io/dsa-base/
 
 Features
 --------

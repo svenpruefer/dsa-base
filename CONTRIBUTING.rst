@@ -15,7 +15,7 @@ Types of Contributions
 Report Bugs
 ~~~~~~~~~~~
 
-Report bugs at https://github.com/svenpruefer/dsa-base/issues.
+Report bugs at https://github.com/svenpruefer/quintilian/issues.
 
 If you are reporting a bug, please include:
 
@@ -38,14 +38,14 @@ and "help wanted" is open to whoever wants to implement it.
 Write Documentation
 ~~~~~~~~~~~~~~~~~~~
 
-dsa-base could always use more documentation, whether as part of the
-official dsa-base docs, in docstrings, or even on the web in blog posts,
+quintilian could always use more documentation, whether as part of the
+official quintilian docs, in docstrings, or even on the web in blog posts,
 articles, and such.
 
 Submit Feedback
 ~~~~~~~~~~~~~~~
 
-The best way to send feedback is to file an issue at https://github.com/svenpruefer/dsa-base/issues.
+The best way to send feedback is to file an issue at https://github.com/svenpruefer/quintilian/issues.
 
 If you are proposing a feature:
 
@@ -57,12 +57,12 @@ If you are proposing a feature:
 Get Started!
 ------------
 
-Ready to contribute? Here's how to set up `dsa-base` for local development.
+Ready to contribute? Here's how to set up `quintilian` for local development.
 
-1. Fork the `dsa-base` repo on GitHub.
+1. Fork the `quintilian` repo on GitHub.
 2. Clone your fork locally::
 
-    $ git clone git@github.com:your_name_here/dsa-base.git
+    $ git clone git@github.com:your_name_here/quintilian.git
 
 3. Create a branch for local development::
 
@@ -93,6 +93,6 @@ Before you submit a pull request, check that it meets these guidelines:
    your new functionality into a function with a docstring, and add the
    feature to the list in README.rst.
 3. Check
-   https://travis-ci.org/svenpruefer/dsa-base/pull_requests
+   https://travis-ci.org/svenpruefer/quintilian/pull_requests
    and make sure that the tests pass.
 
