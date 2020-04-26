@@ -2,7 +2,7 @@
 addSbtPlugin("com.eed3si9n" % "sbt-buildinfo" % "0.9.0")
 
 // Code formatting
-addSbtPlugin("org.scalameta" % "sbt-scalafmt" % "2.0.1")
+addSbtPlugin("org.scalameta" % "sbt-scalafmt" % "2.3.4")
 
 // Package result
 addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.4.1")
