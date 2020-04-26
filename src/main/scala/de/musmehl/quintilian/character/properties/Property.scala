@@ -19,37 +19,42 @@ package de.musmehl.quintilian.character.properties
 
 object Property {
 
-  /**
-    * A base property of a DSA character.
-    */
-  sealed trait BaseProperty {}
+  case class Mut(value: Int)              extends AnyVal
+  case class Klugheit(value: Int)         extends AnyVal
+  case class Intuition(value: Int)        extends AnyVal
+  case class Charisma(value: Int)         extends AnyVal
+  case class Fingerfertigkeit(value: Int) extends AnyVal
+  case class Gewandheit(value: Int)       extends AnyVal
+  case class Kondition(value: Int)        extends AnyVal
+  case class Koerperkraft(value: Int)     extends AnyVal
 
-  case class Mut(value: Int)              extends AnyVal with BaseProperty
-  case class Klugheit(value: Int)         extends AnyVal with BaseProperty
-  case class Intuition(value: Int)        extends AnyVal with BaseProperty
-  case class Charisma(value: Int)         extends AnyVal with BaseProperty
-  case class Fingerfertigkeit(value: Int) extends AnyVal with BaseProperty
-  case class Gewandheit(value: Int)       extends AnyVal with BaseProperty
-  case class Kondition(value: Int)        extends AnyVal with BaseProperty
-  case class Koerperkraft(value: Int)     extends AnyVal with BaseProperty
+  case class Eigenschaften(
+      mut: Mut,
+      klugheit: Klugheit,
+      intuition: Intuition,
+      charisma: Charisma,
+      fingerfertigkeit: Fingerfertigkeit,
+      gewandheit: Gewandheit,
+      kondition: Kondition,
+      koerperkraft: Koerperkraft
+  )
 
-  /**
-    * An energy-like property of a DSA character.
-    */
-  sealed trait Energy {}
+  case class Lebensenergie(value: Int) extends AnyVal
+  case class Ausdauer(value: Int)      extends AnyVal
+  case class Astralenergie(value: Int) extends AnyVal
+  case class Karmaenergie(value: Int)  extends AnyVal
 
-  case class Lebensenergie(value: Int) extends AnyVal with Energy
-  case class Ausdauer(value: Int)      extends AnyVal with Energy
-  case class Astralenergie(value: Int) extends AnyVal with Energy
-  case class Karmaenergie(value: Int)  extends AnyVal with Energy
+  case class Energien(
+      lebensenergie: Lebensenergie,
+      ausdauer: Ausdauer,
+      astralenergie: Astralenergie,
+      karmaenergie: Karmaenergie
+  )
 
-  /**
-    * A property relevant for fights.
-    */
-  sealed trait BattleValue {}
+  case class Attacke(value: Int)        extends AnyVal
+  case class Parade(value: Int)         extends AnyVal
+  case class FernkampfBasis(value: Int) extends AnyVal
+  case class Intitiative(value: Int)    extends AnyVal
 
-  case class Attacke(value: Int)        extends AnyVal with BattleValue
-  case class Parade(value: Int)         extends AnyVal with BattleValue
-  case class FernkampfBasis(value: Int) extends AnyVal with BattleValue
-  case class Intitiative(value: Int)    extends AnyVal with BattleValue
+  case class Kampfwerte(attacke: Attacke, parade: Parade, fernkampfBasis: FernkampfBasis, intitiative: Intitiative)
 }
