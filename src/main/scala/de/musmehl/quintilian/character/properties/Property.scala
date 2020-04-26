@@ -54,7 +54,7 @@ object Property {
   case class Attacke(value: Int)        extends AnyVal
   case class Parade(value: Int)         extends AnyVal
   case class FernkampfBasis(value: Int) extends AnyVal
-  case class Intitiative(value: Int)    extends AnyVal
+  case class Initiative(value: Int)     extends AnyVal
 
-  case class Kampfwerte(attacke: Attacke, parade: Parade, fernkampfBasis: FernkampfBasis, intitiative: Intitiative)
+  case class Kampfwerte(attacke: Attacke, parade: Parade, fernkampfBasis: FernkampfBasis, initiative: Initiative)
 }
