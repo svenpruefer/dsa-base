@@ -1,8 +1,6 @@
 import java.net.URL
 
-import Dependencies._
-
-lazy val tuba = project
+lazy val quintilian = project
   .in(file("."))
   .settings(
     inThisBuild(
@@ -73,9 +71,10 @@ lazy val tuba = project
     ),
     name := "quintilian",
     libraryDependencies ++= List(
-      scalatest  % Test,
-      scalacheck % Test
-    )
+      Dependencies.`scala-fx`,
+      Dependencies.scalatest  % Test,
+      Dependencies.scalacheck % Test
+    ) ++ Dependencies.`java-fx`
   )
   // Package as a normal Java app
   .enablePlugins(JavaAppPackaging)
@@ -88,6 +87,6 @@ lazy val tuba = project
   .settings(
     Defaults.itSettings,
     libraryDependencies ++= List(
-      scalatest % IntegrationTest
+      Dependencies.scalatest % IntegrationTest
     )
   )
