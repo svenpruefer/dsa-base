@@ -72,6 +72,10 @@ lazy val quintilian = project
     name := "quintilian",
     libraryDependencies ++= List(
       Dependencies.`scala-fx`,
+      Dependencies.`circe-core`,
+      Dependencies.`circe-generic`,
+      Dependencies.`circe-parser`,
+      Dependencies.`circe-yaml`,
       Dependencies.scalatest  % Test,
       Dependencies.scalacheck % Test
     ) ++ Dependencies.`java-fx`
