@@ -30,4 +30,12 @@ trait Spell {
 
 object Spell {
   case class Wert(value: Int) extends AnyVal
+
+  case object Pentagramma extends Spell {
+    override def merkmale: Set[SpellAttribute] = ???
+
+    override def executable(characterState: CharacterState): Boolean = ???
+
+    override def execute(characterState: CharacterState): (SpellResult, CharacterState) = ???
+  }
 }
