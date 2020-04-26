@@ -1,5 +1,6 @@
-* mathecamp-konfigurator version:
-* Python version:
+* quintilian version:
+* Scala version:
+* JDK version:
 * Operating System:
 
 ### Description
