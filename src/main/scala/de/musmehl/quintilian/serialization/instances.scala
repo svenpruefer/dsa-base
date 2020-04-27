@@ -98,9 +98,9 @@ object instances {
   implicit val encodeCharacter: Encoder[Character] = (character: Character) =>
     Json.obj(
       ("eigenschaften", character.eigenschaften.asJson),
-      ("energien", character.eigenschaften.asJson),
-      ("kampfwerte", character.eigenschaften.asJson),
-      ("zauber", character.eigenschaften.asJson)
+      ("energien", character.energien.asJson),
+      ("kampfwerte", character.kampfwerte.asJson),
+      ("zauber", character.zauber.asJson)
     )
 
   implicit val decodeCharacter: Decoder[Character] = (c: HCursor) =>
@@ -108,7 +108,7 @@ object instances {
       eigenschaften <- c.downField("eigenschaften").as[Eigenschaften]
       energien      <- c.downField("energien").as[Energien]
       kampfwerte    <- c.downField("kampfwerte").as[Kampfwerte]
-      zauber        <- c.downField("zauber").as[Map[Spell, Spell.Wert]]
+      zauber        <- c.downField("zauber").as[Map[Spell, Spell.Wert]] // TODO Make this work with an empty map
     } yield Character(eigenschaften, energien, kampfwerte, zauber)
 
 }
