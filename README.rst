@@ -1,6 +1,6 @@
-========
-dsa-base
-========
+==========
+Quintilian
+==========
 
 .. image:: https://img.shields.io/travis/svenpruefer/quintilian.svg
 :target: https://travis-ci.org/svenpruefer/quintilian
