@@ -1,0 +1,21 @@
+eigenschaften:
+  mut: 18
+  klugheit: 18
+  intuition: 16
+  charisma: 15
+  fingerfertigkeit: 13
+  gewandheit: 11
+  kondition: 14
+  koerperkraft: 12
+energien:
+  lebensenergie: 32
+  ausdauer: 45
+  astralenergie: 48
+  karmaenergie: 0
+kampfwerte:
+  attacke: 8
+  parade: 8
+  fernkampfbasis: 7
+  initiative: 13
+zauber:
+  pentagramma: 14
