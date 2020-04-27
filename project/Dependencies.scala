@@ -3,7 +3,7 @@ import sbt._
 object Dependencies {
 
   // Unit and integration tests
-  val scalatest: ModuleID = "org.scalatest" %% "scalatest" % "3.0.8"
+  val scalatest: ModuleID = "org.scalatest" %% "scalatest" % "3.1.1"
 
   // Property based testing
   val scalacheck: ModuleID = "org.scalacheck" %% "scalacheck" % "1.14.0"
