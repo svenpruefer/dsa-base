@@ -31,7 +31,7 @@ import scala.io.Source
 class CharacterParseTest extends AnyFunSuiteLike with TypeCheckedTripleEquals {
 
   test("A character YAML file with spells should be parsable") {
-    val input = Source.fromInputStream(getClass.getResourceAsStream("/quintilian.yaml")).mkString
+    val input = Source.fromInputStream(getClass.getResourceAsStream("quintilian.yaml")).mkString
 
     val expectedResult = Character(
       Eigenschaften(
@@ -65,7 +65,7 @@ class CharacterParseTest extends AnyFunSuiteLike with TypeCheckedTripleEquals {
   }
 
   test("A character YAML file without spells should be parsable") {
-    val input = Source.fromInputStream(getClass.getResourceAsStream("/morena.yaml")).mkString
+    val input = Source.fromInputStream(getClass.getResourceAsStream("morena.yaml")).mkString
 
     val expectedResult = Character(
       eigenschaften = Eigenschaften(
