@@ -21,6 +21,7 @@ object Property {
 
   sealed trait Wert {
     def value: Int
+    require(value >= 0, s"Any absolute value in DSA is greater than or equal to zero, but $value is negative")
   }
 
   sealed trait Basiseigenschaft extends Wert
