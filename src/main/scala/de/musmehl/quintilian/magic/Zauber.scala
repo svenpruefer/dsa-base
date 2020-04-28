@@ -19,7 +19,7 @@ package de.musmehl.quintilian.magic
 
 import de.musmehl.quintilian.character.CharacterState
 
-trait Spell {
+trait Zauber {
 
   def merkmale: Set[SpellAttribute]
 
@@ -28,10 +28,10 @@ trait Spell {
   def execute(characterState: CharacterState): (SpellResult, CharacterState)
 }
 
-object Spell {
+object Zauber {
   case class Wert(value: Int) extends AnyVal
 
-  case object Pentagramma extends Spell {
+  case object Pentagramma extends Zauber {
     override def merkmale: Set[SpellAttribute] = ???
 
     override def executable(characterState: CharacterState): Boolean = ???

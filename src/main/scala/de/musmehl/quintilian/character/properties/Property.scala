@@ -19,14 +19,20 @@ package de.musmehl.quintilian.character.properties
 
 object Property {
 
-  case class Mut(value: Int)              extends AnyVal
-  case class Klugheit(value: Int)         extends AnyVal
-  case class Intuition(value: Int)        extends AnyVal
-  case class Charisma(value: Int)         extends AnyVal
-  case class Fingerfertigkeit(value: Int) extends AnyVal
-  case class Gewandheit(value: Int)       extends AnyVal
-  case class Kondition(value: Int)        extends AnyVal
-  case class Koerperkraft(value: Int)     extends AnyVal
+  sealed trait Wert {
+    def value: Int
+  }
+
+  sealed trait Basiseigenschaft extends Wert
+
+  case class Mut(value: Int)              extends Basiseigenschaft
+  case class Klugheit(value: Int)         extends Basiseigenschaft
+  case class Intuition(value: Int)        extends Basiseigenschaft
+  case class Charisma(value: Int)         extends Basiseigenschaft
+  case class Fingerfertigkeit(value: Int) extends Basiseigenschaft
+  case class Gewandheit(value: Int)       extends Basiseigenschaft
+  case class Kondition(value: Int)        extends Basiseigenschaft
+  case class Koerperkraft(value: Int)     extends Basiseigenschaft
 
   case class Eigenschaften(
       mut: Mut,
@@ -39,10 +45,12 @@ object Property {
       koerperkraft: Koerperkraft
   )
 
-  case class Lebensenergie(value: Int) extends AnyVal
-  case class Ausdauer(value: Int)      extends AnyVal
-  case class Astralenergie(value: Int) extends AnyVal
-  case class Karmaenergie(value: Int)  extends AnyVal
+  sealed trait Energie extends Wert
+
+  case class Lebensenergie(value: Int) extends Energie
+  case class Ausdauer(value: Int)      extends Energie
+  case class Astralenergie(value: Int) extends Energie
+  case class Karmaenergie(value: Int)  extends Energie
 
   case class Energien(
       lebensenergie: Lebensenergie,
@@ -51,10 +59,16 @@ object Property {
       karmaenergie: Karmaenergie
   )
 
-  case class Attacke(value: Int)        extends AnyVal
-  case class Parade(value: Int)         extends AnyVal
-  case class FernkampfBasis(value: Int) extends AnyVal
-  case class Initiative(value: Int)     extends AnyVal
+  sealed trait Kampfwert extends Wert
+
+  case class Attacke(value: Int)        extends Kampfwert
+  case class Parade(value: Int)         extends Kampfwert
+  case class FernkampfBasis(value: Int) extends Kampfwert
+  case class Initiative(value: Int)     extends Kampfwert
 
   case class Kampfwerte(attacke: Attacke, parade: Parade, fernkampfBasis: FernkampfBasis, initiative: Initiative)
+
+  case class Zauberfertigkeitspunkt(value: Int) extends Wert
+
+  case class Talentpunkt(value: Int) extends Wert
 }

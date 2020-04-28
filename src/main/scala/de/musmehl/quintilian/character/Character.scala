@@ -18,7 +18,7 @@
 package de.musmehl.quintilian.character
 
 import de.musmehl.quintilian.character.properties.Property._
-import de.musmehl.quintilian.magic.Spell
+import de.musmehl.quintilian.magic.Zauber
 
 /**
   * A stateless DSA character.
@@ -30,5 +30,5 @@ case class Character(
     eigenschaften: Eigenschaften,
     energien: Energien,
     kampfwerte: Kampfwerte,
-    zauber: Map[Spell, Spell.Wert]
+    zauber: Map[Zauber, Zauberfertigkeitspunkt]
 ) {}

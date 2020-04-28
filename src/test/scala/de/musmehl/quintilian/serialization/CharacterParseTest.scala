@@ -18,14 +18,14 @@
 package de.musmehl.quintilian.serialization
 
 import de.musmehl.quintilian.character.Character
-import de.musmehl.quintilian.character.properties.Property.{Astralenergie, Attacke, Ausdauer, Charisma, Eigenschaften, Energien, FernkampfBasis, Fingerfertigkeit, Gewandheit, Initiative, Intuition, Kampfwerte, Karmaenergie, Klugheit, Koerperkraft, Kondition, Lebensenergie, Mut, Parade}
-import de.musmehl.quintilian.magic.Spell
-import de.musmehl.quintilian.magic.Spell.Pentagramma
+import de.musmehl.quintilian.character.properties.Property._
+import de.musmehl.quintilian.magic.Zauber.Pentagramma
 import de.musmehl.quintilian.serialization.instances._
-import org.scalactic.TypeCheckedTripleEquals
-import org.scalatest.funsuite.AnyFunSuiteLike
-import org.scalatest.EitherValues._
 import io.circe.yaml
+import org.scalactic.TypeCheckedTripleEquals
+import org.scalatest.EitherValues._
+import org.scalatest.funsuite.AnyFunSuiteLike
+
 import scala.io.Source
 
 class CharacterParseTest extends AnyFunSuiteLike with TypeCheckedTripleEquals {
@@ -57,7 +57,7 @@ class CharacterParseTest extends AnyFunSuiteLike with TypeCheckedTripleEquals {
         Initiative(13)
       ),
       Map(
-        (Pentagramma, Spell.Wert(14))
+        (Pentagramma, Zauberfertigkeitspunkt(14))
       )
     )
 
