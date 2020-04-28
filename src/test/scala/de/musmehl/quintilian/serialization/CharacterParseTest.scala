@@ -53,7 +53,7 @@ class CharacterParseTest extends AnyFunSuiteLike with TypeCheckedTripleEquals {
       Kampfwerte(
         Attacke(8),
         Parade(8),
-        FernkampfBasis(7),
+        Fernkampfbasis(7),
         Initiative(13)
       ),
       Map(
@@ -87,7 +87,7 @@ class CharacterParseTest extends AnyFunSuiteLike with TypeCheckedTripleEquals {
       kampfwerte = Kampfwerte(
         Attacke(9),
         Parade(9),
-        FernkampfBasis(8),
+        Fernkampfbasis(8),
         Initiative(15)
       ),
       zauber = Map()

@@ -71,7 +71,7 @@ object instances {
     Json.obj(
       ("Attacke", kampfwerte.attacke.value.asJson),
       ("Parade", kampfwerte.parade.value.asJson),
-      ("Fernkampfbasis", kampfwerte.fernkampfBasis.value.asJson),
+      ("Fernkampfbasis", kampfwerte.fernkampfbasis.value.asJson),
       ("Initiative", kampfwerte.initiative.value.asJson)
     )
 
@@ -79,7 +79,7 @@ object instances {
     for {
       attacke        <- c.downField("Attacke").as[Int].map(Property.Attacke)
       parade         <- c.downField("Parade").as[Int].map(Property.Parade)
-      fernkampfbasis <- c.downField("Fernkampfbasis").as[Int].map(Property.FernkampfBasis)
+      fernkampfbasis <- c.downField("Fernkampfbasis").as[Int].map(Property.Fernkampfbasis)
       initiative     <- c.downField("Initiative").as[Int].map(Property.Initiative)
     } yield Kampfwerte(attacke, parade, fernkampfbasis, initiative)
 

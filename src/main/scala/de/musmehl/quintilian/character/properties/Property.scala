@@ -64,10 +64,10 @@ object Property {
 
   case class Attacke(value: Int)        extends Kampfwert
   case class Parade(value: Int)         extends Kampfwert
-  case class FernkampfBasis(value: Int) extends Kampfwert
+  case class Fernkampfbasis(value: Int) extends Kampfwert
   case class Initiative(value: Int)     extends Kampfwert
 
-  case class Kampfwerte(attacke: Attacke, parade: Parade, fernkampfBasis: FernkampfBasis, initiative: Initiative)
+  case class Kampfwerte(attacke: Attacke, parade: Parade, fernkampfbasis: Fernkampfbasis, initiative: Initiative)
 
   case class Zauberfertigkeitspunkt(value: Int) extends Wert
 
