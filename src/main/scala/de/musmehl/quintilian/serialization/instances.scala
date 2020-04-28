@@ -18,12 +18,11 @@
 package de.musmehl.quintilian.serialization
 
 import de.musmehl.quintilian.character.Character
-import de.musmehl.quintilian.character.properties.Property
-import de.musmehl.quintilian.character.properties.Property.{Eigenschaften, Energien, Kampfwerte, Zauberfertigkeitspunkt}
-import de.musmehl.quintilian.magic.Zauber
-import de.musmehl.quintilian.magic.Zauber.Pentagramma
-import io.circe.syntax._
+import de.musmehl.quintilian.character.properties.Wert
+import de.musmehl.quintilian.character.properties.Wert.{Eigenschaften, Energien, Kampfwerte, Zauberfertigkeitspunkt}
+import de.musmehl.quintilian.magic.spell.{Pentagramma, Zauber}
 import io.circe._
+import io.circe.syntax._
 
 object instances {
 
@@ -41,14 +40,14 @@ object instances {
 
   implicit val decodeEigenschaften: Decoder[Eigenschaften] = (c: HCursor) =>
     for {
-      mut              <- c.downField("Mut").as[Int].map(Property.Mut)
-      klugheit         <- c.downField("Klugheit").as[Int].map(Property.Klugheit)
-      intuition        <- c.downField("Intuition").as[Int].map(Property.Intuition)
-      charisma         <- c.downField("Charisma").as[Int].map(Property.Charisma)
-      fingerfertigkeit <- c.downField("Fingerfertigkeit").as[Int].map(Property.Fingerfertigkeit)
-      gewandheit       <- c.downField("Gewandheit").as[Int].map(Property.Gewandheit)
-      kondition        <- c.downField("Kondition").as[Int].map(Property.Kondition)
-      koerperkraft     <- c.downField("Körperkraft").as[Int].map(Property.Koerperkraft)
+      mut              <- c.downField("Mut").as[Int].map(Wert.Mut)
+      klugheit         <- c.downField("Klugheit").as[Int].map(Wert.Klugheit)
+      intuition        <- c.downField("Intuition").as[Int].map(Wert.Intuition)
+      charisma         <- c.downField("Charisma").as[Int].map(Wert.Charisma)
+      fingerfertigkeit <- c.downField("Fingerfertigkeit").as[Int].map(Wert.Fingerfertigkeit)
+      gewandheit       <- c.downField("Gewandheit").as[Int].map(Wert.Gewandheit)
+      kondition        <- c.downField("Kondition").as[Int].map(Wert.Kondition)
+      koerperkraft     <- c.downField("Körperkraft").as[Int].map(Wert.Koerperkraft)
     } yield Eigenschaften(mut, klugheit, intuition, charisma, fingerfertigkeit, gewandheit, kondition, koerperkraft)
 
   implicit val encodeEnergien: Encoder[Energien] = (energien: Energien) =>
@@ -61,27 +60,27 @@ object instances {
 
   implicit val decodeEnergien: Decoder[Energien] = (c: HCursor) =>
     for {
-      lebensenergie <- c.downField("Lebensenergie").as[Int].map(Property.Lebensenergie)
-      ausdauer      <- c.downField("Ausdauer").as[Int].map(Property.Ausdauer)
-      astralenergie <- c.downField("Astralenergie").as[Int].map(Property.Astralenergie)
-      karmaenergie  <- c.downField("Karmaenergie").as[Int].map(Property.Karmaenergie)
+      lebensenergie <- c.downField("Lebensenergie").as[Int].map(Wert.Lebensenergie)
+      ausdauer      <- c.downField("Ausdauer").as[Int].map(Wert.Ausdauer)
+      astralenergie <- c.downField("Astralenergie").as[Int].map(Wert.Astralenergie)
+      karmaenergie  <- c.downField("Karmaenergie").as[Int].map(Wert.Karmaenergie)
     } yield Energien(lebensenergie, ausdauer, astralenergie, karmaenergie)
 
   implicit val encodeKampfwerte: Encoder[Kampfwerte] = (kampfwerte: Kampfwerte) =>
     Json.obj(
       ("Attacke", kampfwerte.attacke.value.asJson),
       ("Parade", kampfwerte.parade.value.asJson),
-      ("Fernkampfbasis", kampfwerte.fernkampfbasis.value.asJson),
+      ("Fernkampf", kampfwerte.fernkampf.value.asJson),
       ("Initiative", kampfwerte.initiative.value.asJson)
     )
 
   implicit val decodeKampfwerte: Decoder[Kampfwerte] = (c: HCursor) =>
     for {
-      attacke        <- c.downField("Attacke").as[Int].map(Property.Attacke)
-      parade         <- c.downField("Parade").as[Int].map(Property.Parade)
-      fernkampfbasis <- c.downField("Fernkampfbasis").as[Int].map(Property.Fernkampfbasis)
-      initiative     <- c.downField("Initiative").as[Int].map(Property.Initiative)
-    } yield Kampfwerte(attacke, parade, fernkampfbasis, initiative)
+      attacke    <- c.downField("Attacke").as[Int].map(Wert.Attacke)
+      parade     <- c.downField("Parade").as[Int].map(Wert.Parade)
+      fernkampf  <- c.downField("Fernkampf").as[Int].map(Wert.Fernkampf)
+      initiative <- c.downField("Initiative").as[Int].map(Wert.Initiative)
+    } yield Kampfwerte(attacke, parade, fernkampf, initiative)
 
   implicit val encodeSpell: KeyEncoder[Zauber] = {
     case Pentagramma => "Pentagramma"
@@ -108,7 +107,7 @@ object instances {
       eigenschaften <- c.downField("Eigenschaften").as[Eigenschaften]
       energien      <- c.downField("Energien").as[Energien]
       kampfwerte    <- c.downField("Kampfwerte").as[Kampfwerte]
-      zauber        <- c.downField("Zauber").as[Map[Zauber, Zauberfertigkeitspunkt]] // TODO Make this work with an empty map
+      zauber        <- c.downField("Zauber").as[Map[Zauber, Zauberfertigkeitspunkt]]
     } yield Character(eigenschaften, energien, kampfwerte, zauber)
 
 }

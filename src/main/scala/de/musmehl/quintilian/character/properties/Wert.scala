@@ -17,12 +17,14 @@
  */
 package de.musmehl.quintilian.character.properties
 
-object Property {
+sealed trait Wert {
 
-  sealed trait Wert {
-    def value: Int
-    require(value >= 0, s"Any absolute value in DSA is greater than or equal to zero, but $value is negative")
-  }
+  require(value >= 0, s"Any absolute value in DSA is greater than or equal to zero, but $value is negative")
+
+  def value: Int
+}
+
+object Wert {
 
   sealed trait Basiseigenschaft extends Wert
 
@@ -62,12 +64,12 @@ object Property {
 
   sealed trait Kampfwert extends Wert
 
-  case class Attacke(value: Int)        extends Kampfwert
-  case class Parade(value: Int)         extends Kampfwert
-  case class Fernkampfbasis(value: Int) extends Kampfwert
-  case class Initiative(value: Int)     extends Kampfwert
+  case class Attacke(value: Int)    extends Kampfwert
+  case class Parade(value: Int)     extends Kampfwert
+  case class Fernkampf(value: Int)  extends Kampfwert
+  case class Initiative(value: Int) extends Kampfwert
 
-  case class Kampfwerte(attacke: Attacke, parade: Parade, fernkampfbasis: Fernkampfbasis, initiative: Initiative)
+  case class Kampfwerte(attacke: Attacke, parade: Parade, fernkampf: Fernkampf, initiative: Initiative)
 
   case class Zauberfertigkeitspunkt(value: Int) extends Wert
 

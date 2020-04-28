@@ -18,8 +18,8 @@
 package de.musmehl.quintilian.serialization
 
 import de.musmehl.quintilian.character.Character
-import de.musmehl.quintilian.character.properties.Property._
-import de.musmehl.quintilian.magic.Zauber.Pentagramma
+import de.musmehl.quintilian.character.properties.Wert._
+import de.musmehl.quintilian.magic.spell.Pentagramma
 import de.musmehl.quintilian.serialization.instances._
 import io.circe.yaml
 import org.scalactic.TypeCheckedTripleEquals
@@ -53,7 +53,7 @@ class CharacterParseTest extends AnyFunSuiteLike with TypeCheckedTripleEquals {
       Kampfwerte(
         Attacke(8),
         Parade(8),
-        Fernkampfbasis(7),
+        Fernkampf(7),
         Initiative(13)
       ),
       Map(
@@ -87,7 +87,7 @@ class CharacterParseTest extends AnyFunSuiteLike with TypeCheckedTripleEquals {
       kampfwerte = Kampfwerte(
         Attacke(9),
         Parade(9),
-        Fernkampfbasis(8),
+        Fernkampf(8),
         Initiative(15)
       ),
       zauber = Map()

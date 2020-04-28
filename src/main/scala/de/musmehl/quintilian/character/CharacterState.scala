@@ -17,7 +17,7 @@
  */
 package de.musmehl.quintilian.character
 
-import de.musmehl.quintilian.character.properties.Property.{Eigenschaften, Energien, Kampfwerte}
+import de.musmehl.quintilian.character.properties.Wert.{Eigenschaften, Energien, Kampfwerte}
 
 /**
   * State of a character at a given point in time.

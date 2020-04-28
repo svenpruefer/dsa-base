@@ -15,20 +15,15 @@
  * You should have received a copy of the GNU General Public License
  * along with quintilian.  If not, see <https://www.gnu.org/licenses/>.
  */
-package de.musmehl.quintilian.character
+package de.musmehl.quintilian.magic.spell
 
-import de.musmehl.quintilian.character.properties.Wert._
-import de.musmehl.quintilian.magic.spell.Zauber
+import de.musmehl.quintilian.character.CharacterState
+import de.musmehl.quintilian.magic.{SpellAttribute, SpellResult}
 
-/**
-  * A stateless DSA character.
-  *
-  * This class describes a DSA character outside of a game, i.e. its maximum life points but not its actual life points
-  * at a moment of time. For this time-dependent concept, see [[de.musmehl.quintilian.character.CharacterState CharacterState]].
-  */
-case class Character(
-    eigenschaften: Eigenschaften,
-    energien: Energien,
-    kampfwerte: Kampfwerte,
-    zauber: Map[Zauber, Zauberfertigkeitspunkt]
-) {}
+case object Pentagramma extends Zauber {
+  override def merkmale: Set[SpellAttribute] = ???
+
+  override def executable(characterState: CharacterState): Boolean = ???
+
+  override def execute(characterState: CharacterState): (SpellResult, CharacterState) = ???
+}

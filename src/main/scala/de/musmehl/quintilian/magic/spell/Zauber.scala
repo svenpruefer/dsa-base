@@ -15,9 +15,10 @@
  * You should have received a copy of the GNU General Public License
  * along with quintilian.  If not, see <https://www.gnu.org/licenses/>.
  */
-package de.musmehl.quintilian.magic
+package de.musmehl.quintilian.magic.spell
 
 import de.musmehl.quintilian.character.CharacterState
+import de.musmehl.quintilian.magic.{SpellAttribute, SpellResult}
 
 trait Zauber {
 
@@ -26,16 +27,4 @@ trait Zauber {
   def executable(characterState: CharacterState): Boolean
 
   def execute(characterState: CharacterState): (SpellResult, CharacterState)
-}
-
-object Zauber {
-  case class Wert(value: Int) extends AnyVal
-
-  case object Pentagramma extends Zauber {
-    override def merkmale: Set[SpellAttribute] = ???
-
-    override def executable(characterState: CharacterState): Boolean = ???
-
-    override def execute(characterState: CharacterState): (SpellResult, CharacterState) = ???
-  }
 }
