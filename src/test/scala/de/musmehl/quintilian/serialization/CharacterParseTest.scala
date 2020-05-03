@@ -29,8 +29,6 @@ import de.musmehl.quintilian.character.talents.kampf.Kampftalentwert
 import de.musmehl.quintilian.magic.spell.Pentagramma
 import de.musmehl.quintilian.serialization.instances._
 import io.circe.yaml
-import io.circe.yaml.syntax._
-import io.circe.syntax._
 import org.scalactic.TypeCheckedTripleEquals
 import org.scalatest.EitherValues._
 import org.scalatest.funsuite.AnyFunSuiteLike
