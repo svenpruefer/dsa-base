@@ -17,5 +17,17 @@ Kampfwerte:
   Parade: 8
   Fernkampf: 7
   Initiative: 13
+Talente:
+  Sinnenschärfe: 9
+Kampftalente:
+  Stäbe:
+    Attacke: 9
+    Parade: 5
 Zauber:
   Pentagramma: 14
+Sonderfertigkeiten:
+  - Ausweichen 1
+Vorteile:
+  - Gutes Gedächtnis
+Nachteile:
+  - Arroganz

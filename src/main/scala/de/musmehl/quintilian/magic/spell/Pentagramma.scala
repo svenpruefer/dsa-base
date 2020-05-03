@@ -17,13 +17,8 @@
  */
 package de.musmehl.quintilian.magic.spell
 
-import de.musmehl.quintilian.character.CharacterState
-import de.musmehl.quintilian.magic.{SpellAttribute, SpellResult}
+import de.musmehl.quintilian.magic.SpellAttribute
 
 case object Pentagramma extends Zauber {
   override def merkmale: Set[SpellAttribute] = ???
-
-  override def executable(characterState: CharacterState): Boolean = ???
-
-  override def execute(characterState: CharacterState): (SpellResult, CharacterState) = ???
 }

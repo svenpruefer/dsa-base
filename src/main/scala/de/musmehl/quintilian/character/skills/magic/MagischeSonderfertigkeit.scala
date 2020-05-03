@@ -15,11 +15,12 @@
  * You should have received a copy of the GNU General Public License
  * along with quintilian.  If not, see <https://www.gnu.org/licenses/>.
  */
-package de.musmehl.quintilian.magic.spell
+package de.musmehl.quintilian.character.skills.magic
 
-import de.musmehl.quintilian.magic.SpellAttribute
+import de.musmehl.quintilian.character.skills.Sonderfertigkeit
 
-trait Zauber {
+sealed trait MagischeSonderfertigkeit extends Sonderfertigkeit {}
 
-  def merkmale: Set[SpellAttribute]
+object MagischeSonderfertigkeit {
+  case object Konzentrationsstaerke extends MagischeSonderfertigkeit
 }

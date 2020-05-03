@@ -17,18 +17,29 @@
  */
 package de.musmehl.quintilian.character
 
-import de.musmehl.quintilian.character.properties.Wert._
+import de.musmehl.quintilian.character.advantages.Vorteil
+import de.musmehl.quintilian.character.disadvantages.Nachteil
+import de.musmehl.quintilian.character.properties.Eigenschaft._
+import de.musmehl.quintilian.character.properties.Eigenschaftswert._
+import de.musmehl.quintilian.character.skills.Sonderfertigkeit
+import de.musmehl.quintilian.character.talents.Talent
+import de.musmehl.quintilian.character.talents.kampf.{Kampftalent, Kampftalentwert}
 import de.musmehl.quintilian.magic.spell.Zauber
 
 /**
   * A stateless DSA character.
   *
-  * This class describes a DSA character outside of a game, i.e. its maximum life points but not its actual life points
-  * at a moment of time. For this time-dependent concept, see [[de.musmehl.quintilian.character.CharacterState CharacterState]].
+  * This class describes a DSA character outside of a game, i.e. for example its maximum life points but not its actual life points
+  * at a moment of time, etc.
   */
 case class Character(
     eigenschaften: Eigenschaften,
     energien: Energien,
     kampfwerte: Kampfwerte,
-    zauber: Map[Zauber, Zauberfertigkeitspunkt]
+    talente: Map[Talent, Talentwert],
+    kampftalente: Map[Kampftalent, Kampftalentwert],
+    zauber: Map[Zauber, Zauberfertigkeitswert],
+    sonderfertigkeiten: Set[Sonderfertigkeit],
+    vorteile: Set[Vorteil],
+    nachteile: Set[Nachteil]
 ) {}

@@ -15,15 +15,10 @@
  * You should have received a copy of the GNU General Public License
  * along with quintilian.  If not, see <https://www.gnu.org/licenses/>.
  */
-package de.musmehl.quintilian.character
+package de.musmehl.quintilian.character.advantages
 
-import de.musmehl.quintilian.character.properties.Wert.{Eigenschaften, Energien, Kampfwerte}
+sealed trait Vorteil {}
 
-/**
-  * State of a character at a given point in time.
-  */
-case class CharacterState(
-    baseProperties: Eigenschaften,
-    energies: Energien,
-    battleValues: Kampfwerte
-)
+object Vorteil {
+  case object GutesGedaechtnis extends Vorteil
+}

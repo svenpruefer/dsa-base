@@ -15,11 +15,14 @@
  * You should have received a copy of the GNU General Public License
  * along with quintilian.  If not, see <https://www.gnu.org/licenses/>.
  */
-package de.musmehl.quintilian.magic.spell
+package de.musmehl.quintilian.character.talents.kampf
 
-import de.musmehl.quintilian.magic.SpellAttribute
+case class Kampftalentwert(attacke: Kampftalentwert.Attacke, parade: Kampftalentwert.Parade) {
+  require(attacke.value >= 0, "'Attacke' value for a 'Kampftalent' must be non-negative.")
+  require(parade.value >= 0, "'Parade' value for a 'Kampftalent' must be non-negative.")
+}
 
-trait Zauber {
-
-  def merkmale: Set[SpellAttribute]
+object Kampftalentwert {
+  case class Attacke(value: Int) extends AnyVal
+  case class Parade(value: Int)  extends AnyVal
 }

@@ -17,17 +17,14 @@
  */
 package de.musmehl.quintilian.character.properties.diff
 
-import de.musmehl.quintilian.character.properties.Wert
-import de.musmehl.quintilian.character.properties.Wert._
-import de.musmehl.quintilian.character.Character
-import de.musmehl.quintilian.magic.spell.Zauber
+import de.musmehl.quintilian.character.properties.Eigenschaftswert
 
-sealed trait WertDiff[T <: Wert] {
+sealed trait WertDiff[T <: Eigenschaftswert] {
   def change: Int
   def applyTo(value: T): T
 }
 
-object WertDiff {
+/*object WertDiff {
 
   case class MutDiff(change: Int) extends WertDiff[Mut] {
     def applyTo(mut: Mut): Mut = mut.copy(value = mut.value + change)
@@ -134,13 +131,13 @@ object WertDiff {
       )
   }
 
-  case class ZauberfertigkeitspunktDiff(change: Int) extends WertDiff[Zauberfertigkeitspunkt] {
-    override def applyTo(zauberfertigkeitspunkt: Zauberfertigkeitspunkt): Zauberfertigkeitspunkt =
+  case class ZauberfertigkeitspunktDiff(change: Int) extends WertDiff[Zauberfertigkeitswert] {
+    override def applyTo(zauberfertigkeitspunkt: Zauberfertigkeitswert): Zauberfertigkeitswert =
       zauberfertigkeitspunkt.copy(value = zauberfertigkeitspunkt.value + change)
   }
 
-  case class TalentpunktDiff(change: Int) extends WertDiff[Talentpunkt] {
-    override def applyTo(talentpunkt: Talentpunkt): Talentpunkt = talentpunkt.copy(value = talentpunkt.value + change)
+  case class TalentpunktDiff(change: Int) extends WertDiff[Talentwert] {
+    override def applyTo(talentpunkt: Talentwert): Talentwert = talentpunkt.copy(value = talentpunkt.value + change)
   }
 
   case class CharacterDiff(
@@ -160,4 +157,4 @@ object WertDiff {
         }
       )
   }
-}
+}*/

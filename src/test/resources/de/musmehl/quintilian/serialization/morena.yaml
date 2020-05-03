@@ -17,5 +17,9 @@ Kampfwerte:
   Parade: 9
   Fernkampf: 8
   Initiative: 15
-Zauber:
-  {}
+Talente: {}
+Kampftalente: {}
+Zauber: {}
+Sonderfertigkeiten: []
+Vorteile: []
+Nachteile: []

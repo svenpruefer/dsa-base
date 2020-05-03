@@ -18,10 +18,19 @@
 package de.musmehl.quintilian.serialization
 
 import de.musmehl.quintilian.character.Character
-import de.musmehl.quintilian.character.properties.Wert._
+import de.musmehl.quintilian.character.advantages.Vorteil.GutesGedaechtnis
+import de.musmehl.quintilian.character.disadvantages.Nachteil.Arroganz
+import de.musmehl.quintilian.character.properties.Eigenschaft.{Eigenschaften, Energien, Kampfwerte}
+import de.musmehl.quintilian.character.properties.Eigenschaftswert._
+import de.musmehl.quintilian.character.skills.Sonderfertigkeit.Ausweichen1
+import de.musmehl.quintilian.character.talents.Talent.Sinnenschaerfe
+import de.musmehl.quintilian.character.talents.kampf.Kampftalent.Staebe
+import de.musmehl.quintilian.character.talents.kampf.Kampftalentwert
 import de.musmehl.quintilian.magic.spell.Pentagramma
 import de.musmehl.quintilian.serialization.instances._
 import io.circe.yaml
+import io.circe.yaml.syntax._
+import io.circe.syntax._
 import org.scalactic.TypeCheckedTripleEquals
 import org.scalatest.EitherValues._
 import org.scalatest.funsuite.AnyFunSuiteLike
@@ -34,7 +43,7 @@ class CharacterParseTest extends AnyFunSuiteLike with TypeCheckedTripleEquals {
     val input = Source.fromInputStream(getClass.getResourceAsStream("quintilian.yaml")).mkString
 
     val expectedResult = Character(
-      Eigenschaften(
+      eigenschaften = Eigenschaften(
         Mut(18),
         Klugheit(18),
         Intuition(16),
@@ -44,20 +53,35 @@ class CharacterParseTest extends AnyFunSuiteLike with TypeCheckedTripleEquals {
         Kondition(14),
         Koerperkraft(12)
       ),
-      Energien(
+      energien = Energien(
         Lebensenergie(32),
         Ausdauer(45),
         Astralenergie(48),
         Karmaenergie(0)
       ),
-      Kampfwerte(
+      kampfwerte = Kampfwerte(
         Attacke(8),
         Parade(8),
         Fernkampf(7),
         Initiative(13)
       ),
-      Map(
-        (Pentagramma, Zauberfertigkeitspunkt(14))
+      talente = Map(
+        (Sinnenschaerfe, Talentwert(9))
+      ),
+      kampftalente = Map(
+        (Staebe, Kampftalentwert(Kampftalentwert.Attacke(9), Kampftalentwert.Parade(5)))
+      ),
+      zauber = Map(
+        (Pentagramma, Zauberfertigkeitswert(14))
+      ),
+      sonderfertigkeiten = Set(
+        Ausweichen1
+      ),
+      vorteile = Set(
+        GutesGedaechtnis
+      ),
+      nachteile = Set(
+        Arroganz
       )
     )
 
@@ -90,7 +114,12 @@ class CharacterParseTest extends AnyFunSuiteLike with TypeCheckedTripleEquals {
         Fernkampf(8),
         Initiative(15)
       ),
-      zauber = Map()
+      talente = Map(),
+      kampftalente = Map(),
+      zauber = Map(),
+      sonderfertigkeiten = Set(),
+      vorteile = Set(),
+      nachteile = Set()
     )
 
     assert(yaml.parser.parse(input).flatMap(_.as[Character]).right.value === expectedResult)

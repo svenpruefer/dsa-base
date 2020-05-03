@@ -15,11 +15,10 @@
  * You should have received a copy of the GNU General Public License
  * along with quintilian.  If not, see <https://www.gnu.org/licenses/>.
  */
-package de.musmehl.quintilian.magic.spell
+package de.musmehl.quintilian.character.skills
 
-import de.musmehl.quintilian.magic.SpellAttribute
+trait Sonderfertigkeit {}
 
-trait Zauber {
-
-  def merkmale: Set[SpellAttribute]
+object Sonderfertigkeit {
+  case object Ausweichen1 extends Sonderfertigkeit
 }
