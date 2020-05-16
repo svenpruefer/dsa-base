@@ -14,7 +14,7 @@ lazy val quintilian = project
         licenses += ("GPL-3.0", new URL(
           "https://www.gnu.org/licenses/gpl-3.0.en.html"
         )),
-        scalaVersion := "2.12.10",
+        scalaVersion := "2.13.2"
       )
     ),
     name := "quintilian",
