@@ -14,4 +14,7 @@ addSbtPlugin("com.dwijnand" % "sbt-dynver" % "4.0.0")
 addSbtPlugin("de.heikoseeberger" % "sbt-header" % "5.2.0")
 
 // Scala linter
-addSbtPlugin("org.wartremover" % "sbt-wartremover" % "2.4.3")
+addSbtPlugin("org.wartremover" % "sbt-wartremover" % "2.4.5")
+
+// Sensible compiler flags
+addSbtPlugin("io.github.davidgregory084" % "sbt-tpolecat" % "0.1.11")
