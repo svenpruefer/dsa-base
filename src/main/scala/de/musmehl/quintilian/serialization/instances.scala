@@ -24,14 +24,15 @@ import de.musmehl.quintilian.character.disadvantages.Nachteil
 import de.musmehl.quintilian.character.disadvantages.Nachteil.Arroganz
 import de.musmehl.quintilian.character.properties.Eigenschaft.{Eigenschaften, Energien, Kampfwerte}
 import de.musmehl.quintilian.character.properties.Eigenschaftswert
-import de.musmehl.quintilian.character.properties.Eigenschaftswert.{Talentwert, Zauberfertigkeitswert}
 import de.musmehl.quintilian.character.skills.Sonderfertigkeit
 import de.musmehl.quintilian.character.skills.Sonderfertigkeit.Ausweichen1
 import de.musmehl.quintilian.character.talents.Talent
+import de.musmehl.quintilian.character.talents.Talentwert
 import de.musmehl.quintilian.character.talents.Talent.Sinnenschaerfe
 import de.musmehl.quintilian.character.talents.kampf.Kampftalent.{Saebel, Staebe}
 import de.musmehl.quintilian.character.talents.kampf.{Kampftalent, Kampftalentwert}
 import de.musmehl.quintilian.magic.spell.{Pentagramma, Zauber}
+import de.musmehl.quintilian.magic.spell.Zauberfertigkeitswert
 import io.circe._
 import io.circe.syntax._
 

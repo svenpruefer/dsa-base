@@ -44,8 +44,4 @@ object Eigenschaftswert {
   case class Ausdauer(value: Int)      extends Eigenschaftswert
   case class Astralenergie(value: Int) extends Eigenschaftswert
   case class Karmaenergie(value: Int)  extends Eigenschaftswert
-
-  case class Zauberfertigkeitswert(value: Int) extends Eigenschaftswert
-
-  case class Talentwert(value: Int) extends Eigenschaftswert
 }

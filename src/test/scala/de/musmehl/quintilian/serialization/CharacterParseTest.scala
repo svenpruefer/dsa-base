@@ -24,9 +24,11 @@ import de.musmehl.quintilian.character.properties.Eigenschaft.{Eigenschaften, En
 import de.musmehl.quintilian.character.properties.Eigenschaftswert._
 import de.musmehl.quintilian.character.skills.Sonderfertigkeit.Ausweichen1
 import de.musmehl.quintilian.character.talents.Talent.Sinnenschaerfe
+import de.musmehl.quintilian.character.talents.Talentwert
 import de.musmehl.quintilian.character.talents.kampf.Kampftalent.Staebe
 import de.musmehl.quintilian.character.talents.kampf.Kampftalentwert
 import de.musmehl.quintilian.magic.spell.Pentagramma
+import de.musmehl.quintilian.magic.spell.Zauberfertigkeitswert
 import de.musmehl.quintilian.serialization.instances._
 import io.circe.yaml
 import org.scalactic.TypeCheckedTripleEquals

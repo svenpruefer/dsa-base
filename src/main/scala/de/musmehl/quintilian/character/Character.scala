@@ -20,11 +20,12 @@ package de.musmehl.quintilian.character
 import de.musmehl.quintilian.character.advantages.Vorteil
 import de.musmehl.quintilian.character.disadvantages.Nachteil
 import de.musmehl.quintilian.character.properties.Eigenschaft._
-import de.musmehl.quintilian.character.properties.Eigenschaftswert._
 import de.musmehl.quintilian.character.skills.Sonderfertigkeit
 import de.musmehl.quintilian.character.talents.Talent
+import de.musmehl.quintilian.character.talents.Talentwert
 import de.musmehl.quintilian.character.talents.kampf.{Kampftalent, Kampftalentwert}
 import de.musmehl.quintilian.magic.spell.Zauber
+import de.musmehl.quintilian.magic.spell.Zauberfertigkeitswert
 
 /**
   * A stateless DSA character.
