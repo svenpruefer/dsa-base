@@ -17,19 +17,18 @@
  */
 package de.musmehl.quintilian.character.properties
 
-sealed trait Eigenschaftswert {
-  require(value >= 0, s"Any absolute 'Wert' in DSA is greater than or equal to zero, but $value is negative")
+sealed trait Kampf {}
 
-  def value: Int
-}
+object Kampf {
+  case object Attacke    extends Kampf
+  case object Parade     extends Kampf
+  case object Fernkampf  extends Kampf
+  case object Initiative extends Kampf
 
-object Eigenschaftswert {
-  case class Mut(value: Int)              extends Eigenschaftswert
-  case class Klugheit(value: Int)         extends Eigenschaftswert
-  case class Intuition(value: Int)        extends Eigenschaftswert
-  case class Charisma(value: Int)         extends Eigenschaftswert
-  case class Fingerfertigkeit(value: Int) extends Eigenschaftswert
-  case class Gewandheit(value: Int)       extends Eigenschaftswert
-  case class Kondition(value: Int)        extends Eigenschaftswert
-  case class Koerperkraft(value: Int)     extends Eigenschaftswert
+  case class Kampfwerte(
+      attacke: Kampfwert.Attacke,
+      parade: Kampfwert.Parade,
+      fernkampf: Kampfwert.Fernkampf,
+      initiative: Kampfwert.Initiative
+  )
 }

@@ -20,6 +20,8 @@ package de.musmehl.quintilian.character
 import de.musmehl.quintilian.character.advantages.Vorteil
 import de.musmehl.quintilian.character.disadvantages.Nachteil
 import de.musmehl.quintilian.character.properties.Eigenschaft._
+import de.musmehl.quintilian.character.properties.Energie._
+import de.musmehl.quintilian.character.properties.Kampf._
 import de.musmehl.quintilian.character.skills.Sonderfertigkeit
 import de.musmehl.quintilian.character.talents.Talent
 import de.musmehl.quintilian.character.talents.Talentwert

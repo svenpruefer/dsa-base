@@ -40,28 +40,4 @@ object Eigenschaft {
       koerperkraft: Eigenschaftswert.Koerperkraft
   )
 
-  case object Lebensenergie extends Eigenschaft
-  case object Ausdauer      extends Eigenschaft
-  case object Astralenergie extends Eigenschaft
-  case object Karmaenergie  extends Eigenschaft
-
-  case class Energien(
-      lebensenergie: Eigenschaftswert.Lebensenergie,
-      ausdauer: Eigenschaftswert.Ausdauer,
-      astralenergie: Eigenschaftswert.Astralenergie,
-      karmaenergie: Eigenschaftswert.Karmaenergie
-  )
-
-  case object Attacke    extends Eigenschaft
-  case object Parade     extends Eigenschaft
-  case object Fernkampf  extends Eigenschaft
-  case object Initiative extends Eigenschaft
-
-  case class Kampfwerte(
-      attacke: Eigenschaftswert.Attacke,
-      parade: Eigenschaftswert.Parade,
-      fernkampf: Eigenschaftswert.Fernkampf,
-      initiative: Eigenschaftswert.Initiative
-  )
-
 }

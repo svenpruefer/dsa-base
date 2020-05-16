@@ -17,19 +17,15 @@
  */
 package de.musmehl.quintilian.character.properties
 
-sealed trait Eigenschaftswert {
+sealed trait Energiewert {
   require(value >= 0, s"Any absolute 'Wert' in DSA is greater than or equal to zero, but $value is negative")
 
   def value: Int
 }
 
-object Eigenschaftswert {
-  case class Mut(value: Int)              extends Eigenschaftswert
-  case class Klugheit(value: Int)         extends Eigenschaftswert
-  case class Intuition(value: Int)        extends Eigenschaftswert
-  case class Charisma(value: Int)         extends Eigenschaftswert
-  case class Fingerfertigkeit(value: Int) extends Eigenschaftswert
-  case class Gewandheit(value: Int)       extends Eigenschaftswert
-  case class Kondition(value: Int)        extends Eigenschaftswert
-  case class Koerperkraft(value: Int)     extends Eigenschaftswert
+object Energiewert {
+  case class Lebensenergie(value: Int) extends Energiewert
+  case class Ausdauer(value: Int)      extends Energiewert
+  case class Astralenergie(value: Int) extends Energiewert
+  case class Karmaenergie(value: Int)  extends Energiewert
 }
