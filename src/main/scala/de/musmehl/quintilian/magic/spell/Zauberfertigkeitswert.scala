@@ -17,4 +17,4 @@
  */
 package de.musmehl.quintilian.magic.spell
 
-case class Zauberfertigkeitswert(value: Int)
+final case class Zauberfertigkeitswert(value: Int)

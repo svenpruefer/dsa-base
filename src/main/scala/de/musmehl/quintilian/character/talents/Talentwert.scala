@@ -17,4 +17,4 @@
  */
 package de.musmehl.quintilian.character.talents
 
-case class Talentwert(value: Int)
+final case class Talentwert(value: Int)

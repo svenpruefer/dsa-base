@@ -17,12 +17,12 @@
  */
 package de.musmehl.quintilian.character.talents.kampf
 
-case class Kampftalentwert(attacke: Kampftalentwert.Attacke, parade: Kampftalentwert.Parade) {
+final case class Kampftalentwert(attacke: Kampftalentwert.Attacke, parade: Kampftalentwert.Parade) {
   require(attacke.value >= 0, "'Attacke' value for a 'Kampftalent' must be non-negative.")
   require(parade.value >= 0, "'Parade' value for a 'Kampftalent' must be non-negative.")
 }
 
 object Kampftalentwert {
-  case class Attacke(value: Int) extends AnyVal
-  case class Parade(value: Int)  extends AnyVal
+  final case class Attacke(value: Int) extends AnyVal
+  final case class Parade(value: Int)  extends AnyVal
 }
