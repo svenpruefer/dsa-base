@@ -25,7 +25,7 @@ object Kampf {
   case object Fernkampf  extends Kampf
   case object Initiative extends Kampf
 
-  case class Kampfwerte(
+  final case class Kampfwerte(
       attacke: Kampfwert.Attacke,
       parade: Kampfwert.Parade,
       fernkampf: Kampfwert.Fernkampf,

@@ -18,17 +18,23 @@
 package de.musmehl.quintilian.serialization
 
 import de.musmehl.quintilian.character.Character
+import de.musmehl.quintilian.character.advantages.Vorteil
 import de.musmehl.quintilian.character.advantages.Vorteil.GutesGedaechtnis
+import de.musmehl.quintilian.character.disadvantages.Nachteil
 import de.musmehl.quintilian.character.disadvantages.Nachteil.Arroganz
-import de.musmehl.quintilian.character.properties.Eigenschaft.{Eigenschaften, Energien, Kampfwerte}
+import de.musmehl.quintilian.character.properties.Eigenschaft.Eigenschaften
+import de.musmehl.quintilian.character.properties.Energie.Energien
+import de.musmehl.quintilian.character.properties.Energiewert._
+import de.musmehl.quintilian.character.properties.Kampfwert._
+import de.musmehl.quintilian.character.properties.Kampf.Kampfwerte
 import de.musmehl.quintilian.character.properties.Eigenschaftswert._
+import de.musmehl.quintilian.character.skills.Sonderfertigkeit
 import de.musmehl.quintilian.character.skills.Sonderfertigkeit.Ausweichen1
 import de.musmehl.quintilian.character.talents.Talent.Sinnenschaerfe
-import de.musmehl.quintilian.character.talents.Talentwert
+import de.musmehl.quintilian.character.talents.{Talent, Talentwert}
 import de.musmehl.quintilian.character.talents.kampf.Kampftalent.Staebe
-import de.musmehl.quintilian.character.talents.kampf.Kampftalentwert
-import de.musmehl.quintilian.magic.spell.Pentagramma
-import de.musmehl.quintilian.magic.spell.Zauberfertigkeitswert
+import de.musmehl.quintilian.character.talents.kampf.{Kampftalent, Kampftalentwert}
+import de.musmehl.quintilian.magic.spell.{Pentagramma, Zauber, Zauberfertigkeitswert}
 import de.musmehl.quintilian.serialization.instances._
 import io.circe.yaml
 import org.scalactic.TypeCheckedTripleEquals
@@ -114,12 +120,12 @@ class CharacterParseTest extends AnyFunSuiteLike with TypeCheckedTripleEquals {
         Fernkampf(8),
         Initiative(15)
       ),
-      talente = Map(),
-      kampftalente = Map(),
-      zauber = Map(),
-      sonderfertigkeiten = Set(),
-      vorteile = Set(),
-      nachteile = Set()
+      talente = Map[Talent, Talentwert](),
+      kampftalente = Map[Kampftalent, Kampftalentwert](),
+      zauber = Map[Zauber, Zauberfertigkeitswert](),
+      sonderfertigkeiten = Set[Sonderfertigkeit](),
+      vorteile = Set[Vorteil](),
+      nachteile = Set[Nachteil]()
     )
 
     assert(yaml.parser.parse(input).flatMap(_.as[Character]).right.value === expectedResult)

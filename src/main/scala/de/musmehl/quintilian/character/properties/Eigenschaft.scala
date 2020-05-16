@@ -29,7 +29,7 @@ object Eigenschaft {
   case object Kondition        extends Eigenschaft
   case object Koerperkraft     extends Eigenschaft
 
-  case class Eigenschaften(
+  final case class Eigenschaften(
       mut: Eigenschaftswert.Mut,
       klugheit: Eigenschaftswert.Klugheit,
       intuition: Eigenschaftswert.Intuition,

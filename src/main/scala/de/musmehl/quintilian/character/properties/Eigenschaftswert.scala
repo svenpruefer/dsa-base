@@ -24,12 +24,12 @@ sealed trait Eigenschaftswert {
 }
 
 object Eigenschaftswert {
-  case class Mut(value: Int)              extends Eigenschaftswert
-  case class Klugheit(value: Int)         extends Eigenschaftswert
-  case class Intuition(value: Int)        extends Eigenschaftswert
-  case class Charisma(value: Int)         extends Eigenschaftswert
-  case class Fingerfertigkeit(value: Int) extends Eigenschaftswert
-  case class Gewandheit(value: Int)       extends Eigenschaftswert
-  case class Kondition(value: Int)        extends Eigenschaftswert
-  case class Koerperkraft(value: Int)     extends Eigenschaftswert
+  final case class Mut(value: Int)              extends Eigenschaftswert
+  final case class Klugheit(value: Int)         extends Eigenschaftswert
+  final case class Intuition(value: Int)        extends Eigenschaftswert
+  final case class Charisma(value: Int)         extends Eigenschaftswert
+  final case class Fingerfertigkeit(value: Int) extends Eigenschaftswert
+  final case class Gewandheit(value: Int)       extends Eigenschaftswert
+  final case class Kondition(value: Int)        extends Eigenschaftswert
+  final case class Koerperkraft(value: Int)     extends Eigenschaftswert
 }

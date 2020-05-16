@@ -84,7 +84,10 @@ lazy val quintilian = project
   .enablePlugins(JavaAppPackaging)
   // Scala linting via WartRemover
   .settings(
-    wartremoverErrors ++= Warts.unsafe
+    wartremoverErrors ++= Warts.allBut(
+      // We use default arguments for case class constructors
+      Wart.DefaultArguments
+    )
   )
   // Integration tests
   .configs(IntegrationTest)

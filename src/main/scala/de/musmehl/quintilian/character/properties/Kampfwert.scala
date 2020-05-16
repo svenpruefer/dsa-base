@@ -24,9 +24,9 @@ sealed trait Kampfwert {
 }
 
 object Kampfwert {
-  case class Attacke(value: Int)    extends Kampfwert
-  case class Parade(value: Int)     extends Kampfwert
-  case class Fernkampf(value: Int)  extends Kampfwert
-  case class Initiative(value: Int) extends Kampfwert
+  final case class Attacke(value: Int)    extends Kampfwert
+  final case class Parade(value: Int)     extends Kampfwert
+  final case class Fernkampf(value: Int)  extends Kampfwert
+  final case class Initiative(value: Int) extends Kampfwert
 
 }

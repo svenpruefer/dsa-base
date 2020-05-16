@@ -35,7 +35,7 @@ import de.musmehl.quintilian.magic.spell.Zauberfertigkeitswert
   * This class describes a DSA character outside of a game, i.e. for example its maximum life points but not its actual life points
   * at a moment of time, etc.
   */
-case class Character(
+final case class Character(
     eigenschaften: Eigenschaften,
     energien: Energien,
     kampfwerte: Kampfwerte,

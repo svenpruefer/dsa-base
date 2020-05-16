@@ -22,8 +22,10 @@ import de.musmehl.quintilian.character.advantages.Vorteil
 import de.musmehl.quintilian.character.advantages.Vorteil.GutesGedaechtnis
 import de.musmehl.quintilian.character.disadvantages.Nachteil
 import de.musmehl.quintilian.character.disadvantages.Nachteil.Arroganz
-import de.musmehl.quintilian.character.properties.Eigenschaft.{Eigenschaften, Energien, Kampfwerte}
-import de.musmehl.quintilian.character.properties.Eigenschaftswert
+import de.musmehl.quintilian.character.properties.Eigenschaft.Eigenschaften
+import de.musmehl.quintilian.character.properties.{Eigenschaftswert, Energiewert, Kampfwert}
+import de.musmehl.quintilian.character.properties.Energie.Energien
+import de.musmehl.quintilian.character.properties.Kampf.Kampfwerte
 import de.musmehl.quintilian.character.skills.Sonderfertigkeit
 import de.musmehl.quintilian.character.skills.Sonderfertigkeit.Ausweichen1
 import de.musmehl.quintilian.character.talents.Talent
@@ -72,10 +74,10 @@ object instances {
 
   implicit val decodeEnergien: Decoder[Energien] = (c: HCursor) =>
     for {
-      lebensenergie <- c.downField("Lebensenergie").as[Int].map(Eigenschaftswert.Lebensenergie)
-      ausdauer      <- c.downField("Ausdauer").as[Int].map(Eigenschaftswert.Ausdauer)
-      astralenergie <- c.downField("Astralenergie").as[Int].map(Eigenschaftswert.Astralenergie)
-      karmaenergie  <- c.downField("Karmaenergie").as[Int].map(Eigenschaftswert.Karmaenergie)
+      lebensenergie <- c.downField("Lebensenergie").as[Int].map(Energiewert.Lebensenergie)
+      ausdauer      <- c.downField("Ausdauer").as[Int].map(Energiewert.Ausdauer)
+      astralenergie <- c.downField("Astralenergie").as[Int].map(Energiewert.Astralenergie)
+      karmaenergie  <- c.downField("Karmaenergie").as[Int].map(Energiewert.Karmaenergie)
     } yield Energien(lebensenergie, ausdauer, astralenergie, karmaenergie)
 
   implicit val encodeKampfwerte: Encoder[Kampfwerte] = (kampfwerte: Kampfwerte) =>
@@ -88,10 +90,10 @@ object instances {
 
   implicit val decodeKampfwerte: Decoder[Kampfwerte] = (c: HCursor) =>
     for {
-      attacke    <- c.downField("Attacke").as[Int].map(Eigenschaftswert.Attacke)
-      parade     <- c.downField("Parade").as[Int].map(Eigenschaftswert.Parade)
-      fernkampf  <- c.downField("Fernkampf").as[Int].map(Eigenschaftswert.Fernkampf)
-      initiative <- c.downField("Initiative").as[Int].map(Eigenschaftswert.Initiative)
+      attacke    <- c.downField("Attacke").as[Int].map(Kampfwert.Attacke)
+      parade     <- c.downField("Parade").as[Int].map(Kampfwert.Parade)
+      fernkampf  <- c.downField("Fernkampf").as[Int].map(Kampfwert.Fernkampf)
+      initiative <- c.downField("Initiative").as[Int].map(Kampfwert.Initiative)
     } yield Kampfwerte(attacke, parade, fernkampf, initiative)
 
   implicit val encodeZauber: KeyEncoder[Zauber] = {

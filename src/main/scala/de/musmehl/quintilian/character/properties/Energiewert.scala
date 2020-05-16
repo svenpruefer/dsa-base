@@ -24,8 +24,8 @@ sealed trait Energiewert {
 }
 
 object Energiewert {
-  case class Lebensenergie(value: Int) extends Energiewert
-  case class Ausdauer(value: Int)      extends Energiewert
-  case class Astralenergie(value: Int) extends Energiewert
-  case class Karmaenergie(value: Int)  extends Energiewert
+  final case class Lebensenergie(value: Int) extends Energiewert
+  final case class Ausdauer(value: Int)      extends Energiewert
+  final case class Astralenergie(value: Int) extends Energiewert
+  final case class Karmaenergie(value: Int)  extends Energiewert
 }

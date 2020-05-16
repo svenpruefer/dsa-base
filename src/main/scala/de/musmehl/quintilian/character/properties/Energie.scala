@@ -25,7 +25,7 @@ object Energie {
   case object Astralenergie extends Energie
   case object Karmaenergie  extends Energie
 
-  case class Energien(
+  final case class Energien(
       lebensenergie: Energiewert.Lebensenergie,
       ausdauer: Energiewert.Ausdauer,
       astralenergie: Energiewert.Astralenergie,
