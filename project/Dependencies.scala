@@ -9,7 +9,7 @@ object Dependencies {
   val scalacheck: ModuleID = "org.scalacheck" %% "scalacheck" % "1.14.0"
 
   // ScalaFX library
-  val `scala-fx`: ModuleID = "org.scalafx" %% "scalafx" % "12.0.2-R18"
+  val `scala-fx`: ModuleID = "org.scalafx" %% "scalafx" % "14-R19"
 
   // JavaFX libraries depending on the operating system. Needed for JDK 11 and above because they are no longer
   // included in the JRE.
@@ -20,7 +20,7 @@ object Dependencies {
     case _                            => throw new Exception("Unknown platform!")
   }
   private lazy val javaFXModules = Seq("base", "controls", "fxml", "graphics", "media", "swing", "web")
-  val `java-fx`: Seq[ModuleID]   = javaFXModules.map(m => "org.openjfx" % s"javafx-$m" % "12.0.2" classifier osName)
+  val `java-fx`: Seq[ModuleID]   = javaFXModules.map(m => "org.openjfx" % s"javafx-$m" % "14.0.1" classifier osName)
 
   // Circe JSON and YAML libraries
   val `circe-core`: ModuleID    = "io.circe" %% "circe-core"    % "0.13.0"
