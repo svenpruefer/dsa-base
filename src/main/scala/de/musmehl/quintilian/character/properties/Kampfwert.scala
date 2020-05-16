@@ -18,7 +18,7 @@
 package de.musmehl.quintilian.character.properties
 
 sealed trait Kampfwert {
-  require(value >= 0, s"Any absolute 'Wert' in DSA is greater than or equal to zero, but $value is negative")
+  require(value >= 0, s"Any absolute 'Wert' in DSA is greater than or equal to zero, but ${value.toString} is negative")
 
   def value: Int
 }

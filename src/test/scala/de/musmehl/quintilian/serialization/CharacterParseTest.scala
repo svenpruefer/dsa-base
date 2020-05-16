@@ -23,22 +23,22 @@ import de.musmehl.quintilian.character.advantages.Vorteil.GutesGedaechtnis
 import de.musmehl.quintilian.character.disadvantages.Nachteil
 import de.musmehl.quintilian.character.disadvantages.Nachteil.Arroganz
 import de.musmehl.quintilian.character.properties.Eigenschaft.Eigenschaften
+import de.musmehl.quintilian.character.properties.Eigenschaftswert._
 import de.musmehl.quintilian.character.properties.Energie.Energien
 import de.musmehl.quintilian.character.properties.Energiewert._
-import de.musmehl.quintilian.character.properties.Kampfwert._
 import de.musmehl.quintilian.character.properties.Kampf.Kampfwerte
-import de.musmehl.quintilian.character.properties.Eigenschaftswert._
+import de.musmehl.quintilian.character.properties.Kampfwert._
 import de.musmehl.quintilian.character.skills.Sonderfertigkeit
 import de.musmehl.quintilian.character.skills.Sonderfertigkeit.Ausweichen1
 import de.musmehl.quintilian.character.talents.Talent.Sinnenschaerfe
-import de.musmehl.quintilian.character.talents.{Talent, Talentwert}
 import de.musmehl.quintilian.character.talents.kampf.Kampftalent.Staebe
 import de.musmehl.quintilian.character.talents.kampf.{Kampftalent, Kampftalentwert}
+import de.musmehl.quintilian.character.talents.{Talent, Talentwert}
 import de.musmehl.quintilian.magic.spell.{Pentagramma, Zauber, Zauberfertigkeitswert}
 import de.musmehl.quintilian.serialization.instances._
 import io.circe.yaml
 import org.scalactic.TypeCheckedTripleEquals
-import org.scalatest.EitherValues._
+import org.scalatest.OptionValues._
 import org.scalatest.funsuite.AnyFunSuiteLike
 
 import scala.io.Source
@@ -91,7 +91,7 @@ class CharacterParseTest extends AnyFunSuiteLike with TypeCheckedTripleEquals {
       )
     )
 
-    assert(yaml.parser.parse(input).flatMap(_.as[Character]).right.value === expectedResult)
+    assert(yaml.parser.parse(input).flatMap(_.as[Character]).toOption.value === expectedResult)
   }
 
   test("A character YAML file without spells should be parsable") {
@@ -128,7 +128,7 @@ class CharacterParseTest extends AnyFunSuiteLike with TypeCheckedTripleEquals {
       nachteile = Set[Nachteil]()
     )
 
-    assert(yaml.parser.parse(input).flatMap(_.as[Character]).right.value === expectedResult)
+    assert(yaml.parser.parse(input).flatMap(_.as[Character]).toOption.value === expectedResult)
   }
 
 }
