@@ -8,6 +8,9 @@ object Dependencies {
   // Property based testing
   val scalacheck: ModuleID = "org.scalacheck" %% "scalacheck" % "1.14.0"
 
+  // Combine Scalates and Scalacheck
+  val scalatestplus: ModuleID = "org.scalatestplus" %% "scalacheck-1-14" % "3.1.1.1"
+
   // ScalaFX library
   val `scala-fx`: ModuleID = "org.scalafx" %% "scalafx" % "14-R19"
 

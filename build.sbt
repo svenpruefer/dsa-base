@@ -24,8 +24,9 @@ lazy val quintilian = project
       Dependencies.`circe-generic`,
       Dependencies.`circe-parser`,
       Dependencies.`circe-yaml`,
-      Dependencies.scalatest  % Test,
-      Dependencies.scalacheck % Test
+      Dependencies.scalatest     % Test,
+      Dependencies.scalacheck    % Test,
+      Dependencies.scalatestplus % Test
     ) ++ Dependencies.`java-fx`
   )
   // Package as a normal Java app
