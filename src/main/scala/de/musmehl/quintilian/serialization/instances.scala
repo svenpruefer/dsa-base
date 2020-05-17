@@ -17,28 +17,31 @@
  */
 package de.musmehl.quintilian.serialization
 
-import de.musmehl.quintilian.character.Character
-import de.musmehl.quintilian.character.advantages.Vorteil
+import de.musmehl.quintilian.character.{Character, CharacterDiff}
+import de.musmehl.quintilian.character.advantages.{Vorteil, VorteilDiff}
 import de.musmehl.quintilian.character.advantages.Vorteil.GutesGedaechtnis
-import de.musmehl.quintilian.character.disadvantages.Nachteil
+import de.musmehl.quintilian.character.disadvantages.{Nachteil, NachteilDiff}
 import de.musmehl.quintilian.character.disadvantages.Nachteil.Arroganz
 import de.musmehl.quintilian.character.properties.Eigenschaft.Eigenschaften
-import de.musmehl.quintilian.character.properties.{Eigenschaftswert, Energiewert, Kampfwert}
+import de.musmehl.quintilian.character.properties.{EigenschaftsDiff, Eigenschaftswert, EnergieDiff, Energiewert, KampfDiff, Kampfwert}
 import de.musmehl.quintilian.character.properties.Energie.Energien
 import de.musmehl.quintilian.character.properties.Kampf.Kampfwerte
-import de.musmehl.quintilian.character.skills.Sonderfertigkeit
+import de.musmehl.quintilian.character.skills.{Sonderfertigkeit, SonderfertigkeitenDiff}
 import de.musmehl.quintilian.character.skills.Sonderfertigkeit.Ausweichen1
-import de.musmehl.quintilian.character.talents.Talent
-import de.musmehl.quintilian.character.talents.Talentwert
+import de.musmehl.quintilian.character.talents.{Talent, TalentDiff, Talentwert}
 import de.musmehl.quintilian.character.talents.Talent.Sinnenschaerfe
 import de.musmehl.quintilian.character.talents.kampf.Kampftalent.{Saebel, Staebe}
-import de.musmehl.quintilian.character.talents.kampf.{Kampftalent, Kampftalentwert}
-import de.musmehl.quintilian.magic.spell.{Pentagramma, Zauber}
-import de.musmehl.quintilian.magic.spell.Zauberfertigkeitswert
+import de.musmehl.quintilian.character.talents.kampf.{Kampftalent, KampftalenteDiff, Kampftalentwert, KampftalentwertDiff}
+import de.musmehl.quintilian.magic.spell.{Pentagramma, Zauber, ZauberDiff, Zauberfertigkeitswert}
 import io.circe._
 import io.circe.syntax._
+import cats.implicits._
 
 object instances {
+
+  private val encodeNonZeroInt: Encoder[Int] = (value: Int) => if (value === 0) Json.Null else Json.fromInt(value)
+  private def encodeNonEmptySet[T](implicit elementEncoder: Encoder[T]): Encoder[Set[T]] =
+    (set: Set[T]) => if (set.isEmpty) Json.Null else Encoder.encodeSet(elementEncoder)(set)
 
   implicit val encodeEigenschaften: Encoder[Eigenschaften] = (eigenschaften: Eigenschaften) =>
     Json.obj(
@@ -51,7 +54,6 @@ object instances {
       ("Kondition", eigenschaften.kondition.value.asJson),
       ("Körperkraft", eigenschaften.koerperkraft.value.asJson)
     )
-
   implicit val decodeEigenschaften: Decoder[Eigenschaften] = (c: HCursor) =>
     for {
       mut              <- c.downField("Mut").as[Int].map(Eigenschaftswert.Mut)
@@ -62,7 +64,50 @@ object instances {
       gewandheit       <- c.downField("Gewandheit").as[Int].map(Eigenschaftswert.Gewandheit)
       kondition        <- c.downField("Kondition").as[Int].map(Eigenschaftswert.Kondition)
       koerperkraft     <- c.downField("Körperkraft").as[Int].map(Eigenschaftswert.Koerperkraft)
-    } yield Eigenschaften(mut, klugheit, intuition, charisma, fingerfertigkeit, gewandheit, kondition, koerperkraft)
+    } yield Eigenschaften(
+      mut = mut,
+      klugheit = klugheit,
+      intuition = intuition,
+      charisma = charisma,
+      fingerfertigkeit = fingerfertigkeit,
+      gewandheit = gewandheit,
+      kondition = kondition,
+      koerperkraft = koerperkraft
+    )
+
+  implicit val encodeEigenschaftsDiff: Encoder[EigenschaftsDiff] = (eigenschaftsDiff: EigenschaftsDiff) =>
+    Json
+      .obj(
+        ("Mut", eigenschaftsDiff.mut.asJson(encodeNonZeroInt)),
+        ("Klugheit", eigenschaftsDiff.klugheit.asJson(encodeNonZeroInt)),
+        ("Intuition", eigenschaftsDiff.intuition.asJson(encodeNonZeroInt)),
+        ("Charisma", eigenschaftsDiff.charisma.asJson(encodeNonZeroInt)),
+        ("Fingerfertigkeit", eigenschaftsDiff.fingerfertigkeit.asJson(encodeNonZeroInt)),
+        ("Gewandheit", eigenschaftsDiff.gewandheit.asJson(encodeNonZeroInt)),
+        ("Kondition", eigenschaftsDiff.kondition.asJson(encodeNonZeroInt)),
+        ("Körperkraft", eigenschaftsDiff.koerperkraft.asJson(encodeNonZeroInt))
+      )
+      .dropNullValues
+  implicit val decodeEigenschaftsDiff: Decoder[EigenschaftsDiff] = (c: HCursor) =>
+    for {
+      mut              <- c.getOrElse[Int]("Mut")(0)
+      klugheit         <- c.getOrElse[Int]("Klugheit")(0)
+      intuition        <- c.getOrElse[Int]("Intuition")(0)
+      charisma         <- c.getOrElse[Int]("Charisma")(0)
+      fingerfertigkeit <- c.getOrElse[Int]("Fingerfertigkeit")(0)
+      gewandheit       <- c.getOrElse[Int]("Gewandheit")(0)
+      kondition        <- c.getOrElse[Int]("Kondition")(0)
+      koerperkraft     <- c.getOrElse[Int]("Körperkraft")(0)
+    } yield EigenschaftsDiff(
+      mut = mut,
+      klugheit = klugheit,
+      intuition = intuition,
+      charisma = charisma,
+      fingerfertigkeit = fingerfertigkeit,
+      gewandheit = gewandheit,
+      kondition = kondition,
+      koerperkraft = koerperkraft
+    )
 
   implicit val encodeEnergien: Encoder[Energien] = (energien: Energien) =>
     Json.obj(
@@ -71,14 +116,40 @@ object instances {
       ("Ausdauer", energien.ausdauer.value.asJson),
       ("Karmaenergie", energien.karmaenergie.value.asJson)
     )
-
   implicit val decodeEnergien: Decoder[Energien] = (c: HCursor) =>
     for {
       lebensenergie <- c.downField("Lebensenergie").as[Int].map(Energiewert.Lebensenergie)
       ausdauer      <- c.downField("Ausdauer").as[Int].map(Energiewert.Ausdauer)
       astralenergie <- c.downField("Astralenergie").as[Int].map(Energiewert.Astralenergie)
       karmaenergie  <- c.downField("Karmaenergie").as[Int].map(Energiewert.Karmaenergie)
-    } yield Energien(lebensenergie, ausdauer, astralenergie, karmaenergie)
+    } yield Energien(
+      lebensenergie = lebensenergie,
+      ausdauer = ausdauer,
+      astralenergie = astralenergie,
+      karmaenergie = karmaenergie
+    )
+
+  implicit val encodeEnergieDiff: Encoder[EnergieDiff] = (energien: EnergieDiff) =>
+    Json
+      .obj(
+        ("Lebensenergie", energien.lebensenergie.asJson(encodeNonZeroInt)),
+        ("Astralenergie", energien.astralenergie.asJson(encodeNonZeroInt)),
+        ("Ausdauer", energien.ausdauer.asJson(encodeNonZeroInt)),
+        ("Karmaenergie", energien.karmaenergie.asJson(encodeNonZeroInt))
+      )
+      .dropNullValues
+  implicit val decodeEnergieDiff: Decoder[EnergieDiff] = (c: HCursor) =>
+    for {
+      lebensenergie <- c.getOrElse[Int]("Lebensenergie")(0)
+      ausdauer      <- c.getOrElse[Int]("Ausdauer")(0)
+      astralenergie <- c.getOrElse[Int]("Astralenergie")(0)
+      karmaenergie  <- c.getOrElse[Int]("Karmaenergie")(0)
+    } yield EnergieDiff(
+      lebensenergie = lebensenergie,
+      ausdauer = ausdauer,
+      astralenergie = astralenergie,
+      karmaenergie = karmaenergie
+    )
 
   implicit val encodeKampfwerte: Encoder[Kampfwerte] = (kampfwerte: Kampfwerte) =>
     Json.obj(
@@ -87,14 +158,30 @@ object instances {
       ("Fernkampf", kampfwerte.fernkampf.value.asJson),
       ("Initiative", kampfwerte.initiative.value.asJson)
     )
-
   implicit val decodeKampfwerte: Decoder[Kampfwerte] = (c: HCursor) =>
     for {
       attacke    <- c.downField("Attacke").as[Int].map(Kampfwert.Attacke)
       parade     <- c.downField("Parade").as[Int].map(Kampfwert.Parade)
       fernkampf  <- c.downField("Fernkampf").as[Int].map(Kampfwert.Fernkampf)
       initiative <- c.downField("Initiative").as[Int].map(Kampfwert.Initiative)
-    } yield Kampfwerte(attacke, parade, fernkampf, initiative)
+    } yield Kampfwerte(attacke = attacke, parade = parade, fernkampf = fernkampf, initiative = initiative)
+
+  implicit val encodeKampfDiff: Encoder[KampfDiff] = (kampfDiff: KampfDiff) =>
+    Json
+      .obj(
+        ("Attacke", kampfDiff.attacke.asJson(encodeNonZeroInt)),
+        ("Parade", kampfDiff.parade.asJson(encodeNonZeroInt)),
+        ("Fernkampf", kampfDiff.fernkampf.asJson(encodeNonZeroInt)),
+        ("Initiative", kampfDiff.initiative.asJson(encodeNonZeroInt))
+      )
+      .dropNullValues
+  implicit val decodeKampfDiff: Decoder[KampfDiff] = (c: HCursor) =>
+    for {
+      attacke    <- c.getOrElse[Int]("Attacke")(0)
+      parade     <- c.getOrElse[Int]("Parade")(0)
+      fernkampf  <- c.getOrElse[Int]("Fernkampf")(0)
+      initiative <- c.getOrElse[Int]("Initiative")(0)
+    } yield KampfDiff(attacke = attacke, parade = parade, fernkampf = fernkampf, initiative = initiative)
 
   implicit val encodeZauber: KeyEncoder[Zauber] = {
     case Pentagramma => "Pentagramma"
@@ -107,6 +194,13 @@ object instances {
   implicit val decodeZauberfertigkeitswert: Decoder[Zauberfertigkeitswert] =
     Decoder.decodeInt.map(Zauberfertigkeitswert)
 
+  implicit val encodeZauberDiff: Encoder[ZauberDiff] = Encoder
+    .encodeMap[Zauber, Int](encodeZauber, encodeNonZeroInt)
+    .contramap[ZauberDiff](_.diffs)
+    .mapJson(_.deepDropNullValues)
+  implicit val decodeZauberDiff: Decoder[ZauberDiff] =
+    Decoder.decodeMap[Zauber, Int](decodeZauber, Decoder.decodeInt).map(ZauberDiff(_))
+
   implicit val encodeTalent: KeyEncoder[Talent] = {
     case Sinnenschaerfe => "Sinnenschärfe"
   }
@@ -116,6 +210,13 @@ object instances {
 
   implicit val encodeTalentwert: Encoder[Talentwert] = Encoder.encodeInt.contramap(_.value)
   implicit val decodeTalentwert: Decoder[Talentwert] = Decoder.decodeInt.map(Talentwert)
+
+  implicit val encodeTalentDiff: Encoder[TalentDiff] = Encoder
+    .encodeMap[Talent, Int](encodeTalent, encodeNonZeroInt)
+    .contramap[TalentDiff](_.diffs)
+    .mapJson(_.deepDropNullValues)
+  implicit val decodeTalentDiff: Decoder[TalentDiff] =
+    Decoder.decodeMap[Talent, Int](decodeTalent, Decoder.decodeInt).map(TalentDiff(_))
 
   implicit val encodeKampftalent: KeyEncoder[Kampftalent] = {
     case Staebe => "Stäbe"
@@ -137,12 +238,46 @@ object instances {
       parade  <- c.downField("Parade").as[Int].map(Kampftalentwert.Parade)
     } yield Kampftalentwert(attacke, parade)
 
+  implicit val encodeKampftalentwertDiff: Encoder[KampftalentwertDiff] = (kampftalentwertDiff: KampftalentwertDiff) =>
+    Json.obj(
+      ("Attacke", kampftalentwertDiff.attacke.asJson),
+      ("Parade", kampftalentwertDiff.parade.asJson)
+    )
+  implicit val decodeKampftalentwertDiff: Decoder[KampftalentwertDiff] = (c: HCursor) =>
+    for {
+      attacke <- c.downField("Attacke").as[Int]
+      parade  <- c.downField("Parade").as[Int]
+    } yield KampftalentwertDiff(attacke = attacke, parade = parade)
+
+  implicit val encodeKampftalenteDiff: Encoder[KampftalenteDiff] = Encoder
+    .encodeMap[Kampftalent, KampftalentwertDiff](encodeKampftalent, encodeKampftalentwertDiff)
+    .contramap[KampftalenteDiff](_.diffs)
+    .mapJson(_.deepDropNullValues)
+  implicit val decodeKampftalenteDiff: Decoder[KampftalenteDiff] =
+    Decoder
+      .decodeMap[Kampftalent, KampftalentwertDiff](decodeKampftalent, decodeKampftalentwertDiff)
+      .map(KampftalenteDiff(_))
+
   implicit val encodeSonderfertigkeit: Encoder[Sonderfertigkeit] = {
     case Ausweichen1 => "Ausweichen 1".asJson
   }
   implicit val decodeSonderfertigkeit: Decoder[Sonderfertigkeit] = Decoder.decodeString.map {
     case "Ausweichen 1" => Ausweichen1
   }
+
+  implicit val encodeSonderfertigkeitenDiff: Encoder[SonderfertigkeitenDiff] =
+    (sonderfertigkeitenDiff: SonderfertigkeitenDiff) =>
+      Json
+        .obj(
+          ("add", sonderfertigkeitenDiff.add.asJson(encodeNonEmptySet[Sonderfertigkeit])),
+          ("remove", sonderfertigkeitenDiff.remove.asJson(encodeNonEmptySet[Sonderfertigkeit]))
+        )
+        .dropNullValues
+  implicit val decodeSonderfertigkeitenDiff: Decoder[SonderfertigkeitenDiff] = (c: HCursor) =>
+    for {
+      add    <- c.getOrElse[Set[Sonderfertigkeit]]("add")(Set.empty[Sonderfertigkeit])
+      remove <- c.getOrElse[Set[Sonderfertigkeit]]("remove")(Set.empty[Sonderfertigkeit])
+    } yield SonderfertigkeitenDiff(add = add, remove = remove)
 
   implicit val encodeVorteil: Encoder[Vorteil] = {
     case GutesGedaechtnis => "Gutes Gedächtnis".asJson
@@ -151,12 +286,40 @@ object instances {
     case "Gutes Gedächtnis" => GutesGedaechtnis
   }
 
+  implicit val encodeVorteilDiff: Encoder[VorteilDiff] =
+    (vorteilDiff: VorteilDiff) =>
+      Json
+        .obj(
+          ("add", vorteilDiff.add.asJson(encodeNonEmptySet[Vorteil])),
+          ("remove", vorteilDiff.remove.asJson(encodeNonEmptySet[Vorteil]))
+        )
+        .dropNullValues
+  implicit val decodeVorteilDiff: Decoder[VorteilDiff] = (c: HCursor) =>
+    for {
+      add    <- c.getOrElse[Set[Vorteil]]("add")(Set.empty[Vorteil])
+      remove <- c.getOrElse[Set[Vorteil]]("remove")(Set.empty[Vorteil])
+    } yield VorteilDiff(add = add, remove = remove)
+
   implicit val encodeNachteil: Encoder[Nachteil] = {
     case Arroganz => "Arroganz".asJson
   }
   implicit val decodeNachteil: Decoder[Nachteil] = Decoder.decodeString.map {
     case "Arroganz" => Arroganz
   }
+
+  implicit val encodeNachteilDiff: Encoder[NachteilDiff] =
+    (nachteilDiff: NachteilDiff) =>
+      Json
+        .obj(
+          ("add", nachteilDiff.add.asJson(encodeNonEmptySet[Nachteil])),
+          ("remove", nachteilDiff.remove.asJson(encodeNonEmptySet[Nachteil]))
+        )
+        .dropNullValues
+  implicit val decodeNachteilDiff: Decoder[NachteilDiff] = (c: HCursor) =>
+    for {
+      add    <- c.getOrElse[Set[Nachteil]]("add")(Set.empty[Nachteil])
+      remove <- c.getOrElse[Set[Nachteil]]("remove")(Set.empty[Nachteil])
+    } yield NachteilDiff(add = add, remove = remove)
 
   implicit val encodeCharacter: Encoder[Character] = (character: Character) =>
     Json.obj(
@@ -194,4 +357,41 @@ object instances {
       nachteile
     )
 
+  implicit val encodeCharacterDiff: Encoder[CharacterDiff] = (characterDiff: CharacterDiff) =>
+    Json
+      .obj(
+        ("Eigenschaften", characterDiff.eigenschaften.asJson),
+        ("Energien", characterDiff.energien.asJson),
+        ("Kampfwerte", characterDiff.kampfwerte.asJson),
+        ("Talente", characterDiff.talente.asJson),
+        ("Kampftalente", characterDiff.kampftalente.asJson),
+        ("Zauber", characterDiff.zauber.asJson),
+        ("Sonderfertigkeiten", characterDiff.sonderfertigkeiten.asJson),
+        ("Vorteile", characterDiff.vorteile.asJson),
+        ("Nachteile", characterDiff.nachteile.asJson)
+      )
+      .dropNullValues
+
+  implicit val decodeCharacterDiff: Decoder[CharacterDiff] = (c: HCursor) =>
+    for {
+      eigenschaften      <- c.getOrElse[EigenschaftsDiff]("Eigenschaften")(EigenschaftsDiff())
+      energien           <- c.getOrElse[EnergieDiff]("Energien")(EnergieDiff())
+      kampfwerte         <- c.getOrElse[KampfDiff]("Kampfwerte")(KampfDiff())
+      talente            <- c.getOrElse[TalentDiff]("Talente")(TalentDiff())
+      kampftalente       <- c.getOrElse[KampftalenteDiff]("Kampftalente")(KampftalenteDiff())
+      zauber             <- c.getOrElse[ZauberDiff]("Zauber")(ZauberDiff())
+      sonderfertigkeiten <- c.getOrElse[SonderfertigkeitenDiff]("Sonderfertigkeiten")(SonderfertigkeitenDiff())
+      vorteile           <- c.getOrElse[VorteilDiff]("Vorteile")(VorteilDiff())
+      nachteile          <- c.getOrElse[NachteilDiff]("Nachteile")(NachteilDiff())
+    } yield CharacterDiff(
+      eigenschaften = eigenschaften,
+      energien = energien,
+      kampfwerte = kampfwerte,
+      talente = talente,
+      kampftalente = kampftalente,
+      zauber = zauber,
+      sonderfertigkeiten = sonderfertigkeiten,
+      vorteile = vorteile,
+      nachteile = nachteile
+    )
 }
