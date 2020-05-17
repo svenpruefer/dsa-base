@@ -49,6 +49,9 @@ import scala.io.Source
 
 class CharacterParseSpec extends AnyWordSpec with ScalaCheckDrivenPropertyChecks with TypeCheckedTripleEquals {
 
+  override implicit val generatorDrivenConfig: PropertyCheckConfiguration =
+    PropertyCheckConfiguration(minSuccessful = 100, sizeRange = 2)
+
   "A character YAML file" should {
     "be parsable" when {
       "it contains spells" in {
