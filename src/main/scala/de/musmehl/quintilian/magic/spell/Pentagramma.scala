@@ -17,8 +17,16 @@
  */
 package de.musmehl.quintilian.magic.spell
 
+import de.musmehl.quintilian.character.properties.Eigenschaft
+import de.musmehl.quintilian.character.properties.Eigenschaft.{Charisma, Mut}
 import de.musmehl.quintilian.magic.SpellAttribute
+import de.musmehl.quintilian.magic.SpellAttribute.{Antimagie, Beschwoerung, DaemonischAllgemein, Geisterwesen}
 
 case object Pentagramma extends Zauber {
-  override def merkmale: Set[SpellAttribute] = ???
+
+  override val displayName: String = "Pentagramma Sphärenbann"
+
+  override val eigenschaften: List[Eigenschaft] = List[Eigenschaft](Mut, Mut, Charisma)
+
+  override val merkmale: Set[SpellAttribute] = Set(DaemonischAllgemein, Antimagie, Beschwoerung, Geisterwesen)
 }

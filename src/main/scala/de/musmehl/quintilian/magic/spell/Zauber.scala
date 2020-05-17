@@ -17,9 +17,14 @@
  */
 package de.musmehl.quintilian.magic.spell
 
+import de.musmehl.quintilian.character.properties.Eigenschaft
 import de.musmehl.quintilian.magic.SpellAttribute
 
 trait Zauber {
+
+  def displayName: String
+
+  def eigenschaften: List[Eigenschaft]
 
   def merkmale: Set[SpellAttribute]
 }

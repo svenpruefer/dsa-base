@@ -21,6 +21,7 @@ sealed trait SpellAttribute {}
 
 object SpellAttribute {
 
+  case object Antimagie              extends SpellAttribute
   case object Beschwoerung           extends SpellAttribute
   case object DaemonischAllgemein    extends SpellAttribute
   case object DaemonischAgrimoth     extends SpellAttribute
