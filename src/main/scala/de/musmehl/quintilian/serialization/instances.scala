@@ -384,15 +384,15 @@ object instances {
 
   implicit val decodeCharacterDiff: Decoder[CharacterDiff] = (c: HCursor) =>
     for {
-      eigenschaften      <- c.getOrElse[EigenschaftsDiff]("Eigenschaften")(EigenschaftsDiff())
-      energien           <- c.getOrElse[EnergieDiff]("Energien")(EnergieDiff())
-      kampfwerte         <- c.getOrElse[KampfDiff]("Kampfwerte")(KampfDiff())
-      talente            <- c.getOrElse[TalentDiff]("Talente")(TalentDiff())
-      kampftalente       <- c.getOrElse[KampftalenteDiff]("Kampftalente")(KampftalenteDiff())
-      zauber             <- c.getOrElse[ZauberDiff]("Zauber")(ZauberDiff())
-      sonderfertigkeiten <- c.getOrElse[SonderfertigkeitenDiff]("Sonderfertigkeiten")(SonderfertigkeitenDiff())
-      vorteile           <- c.getOrElse[VorteilDiff]("Vorteile")(VorteilDiff())
-      nachteile          <- c.getOrElse[NachteilDiff]("Nachteile")(NachteilDiff())
+      eigenschaften      <- c.getOrElse[EigenschaftsDiff]("Eigenschaften")(EigenschaftsDiff.empty)
+      energien           <- c.getOrElse[EnergieDiff]("Energien")(EnergieDiff.empty)
+      kampfwerte         <- c.getOrElse[KampfDiff]("Kampfwerte")(KampfDiff.empty)
+      talente            <- c.getOrElse[TalentDiff]("Talente")(TalentDiff.empty)
+      kampftalente       <- c.getOrElse[KampftalenteDiff]("Kampftalente")(KampftalenteDiff.empty)
+      zauber             <- c.getOrElse[ZauberDiff]("Zauber")(ZauberDiff.empty)
+      sonderfertigkeiten <- c.getOrElse[SonderfertigkeitenDiff]("Sonderfertigkeiten")(SonderfertigkeitenDiff.empty)
+      vorteile           <- c.getOrElse[VorteilDiff]("Vorteile")(VorteilDiff.empty)
+      nachteile          <- c.getOrElse[NachteilDiff]("Nachteile")(NachteilDiff.empty)
     } yield CharacterDiff(
       eigenschaften = eigenschaften,
       energien = energien,
