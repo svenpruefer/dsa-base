@@ -21,4 +21,6 @@ sealed trait Vorteil {}
 
 object Vorteil {
   case object GutesGedaechtnis extends Vorteil
+
+  case object EidetischesGedaechtnis extends Vorteil
 }

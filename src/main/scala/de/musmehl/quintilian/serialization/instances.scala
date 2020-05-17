@@ -19,20 +19,20 @@ package de.musmehl.quintilian.serialization
 
 import de.musmehl.quintilian.character.{Character, CharacterDiff}
 import de.musmehl.quintilian.character.advantages.{Vorteil, VorteilDiff}
-import de.musmehl.quintilian.character.advantages.Vorteil.GutesGedaechtnis
+import de.musmehl.quintilian.character.advantages.Vorteil.{EidetischesGedaechtnis, GutesGedaechtnis}
 import de.musmehl.quintilian.character.disadvantages.{Nachteil, NachteilDiff}
-import de.musmehl.quintilian.character.disadvantages.Nachteil.Arroganz
+import de.musmehl.quintilian.character.disadvantages.Nachteil.{Arroganz, Goldgier}
 import de.musmehl.quintilian.character.properties.Eigenschaft.Eigenschaften
 import de.musmehl.quintilian.character.properties.{EigenschaftsDiff, Eigenschaftswert, EnergieDiff, Energiewert, KampfDiff, Kampfwert}
 import de.musmehl.quintilian.character.properties.Energie.Energien
 import de.musmehl.quintilian.character.properties.Kampf.Kampfwerte
 import de.musmehl.quintilian.character.skills.{Sonderfertigkeit, SonderfertigkeitenDiff}
-import de.musmehl.quintilian.character.skills.Sonderfertigkeit.Ausweichen1
+import de.musmehl.quintilian.character.skills.Sonderfertigkeit.{Ausweichen1, Ausweichen2}
 import de.musmehl.quintilian.character.talents.{Talent, TalentDiff, Talentwert}
-import de.musmehl.quintilian.character.talents.Talent.Sinnenschaerfe
+import de.musmehl.quintilian.character.talents.Talent.{Alchemie, Sinnenschaerfe}
 import de.musmehl.quintilian.character.talents.kampf.Kampftalent.{Saebel, Staebe}
 import de.musmehl.quintilian.character.talents.kampf.{Kampftalent, KampftalenteDiff, Kampftalentwert, KampftalentwertDiff}
-import de.musmehl.quintilian.magic.spell.{Pentagramma, Zauber, ZauberDiff, Zauberfertigkeitswert}
+import de.musmehl.quintilian.magic.spell.{FlimFlamFunkel, Pentagramma, Zauber, ZauberDiff, Zauberfertigkeitswert}
 import io.circe._
 import io.circe.syntax._
 import cats.implicits._
@@ -184,10 +184,12 @@ object instances {
     } yield KampfDiff(attacke = attacke, parade = parade, fernkampf = fernkampf, initiative = initiative)
 
   implicit val encodeZauber: KeyEncoder[Zauber] = {
-    case Pentagramma => "Pentagramma"
+    case Pentagramma    => "Pentagramma"
+    case FlimFlamFunkel => "FlimFlamFunkel"
   }
   implicit val decodeZauber: KeyDecoder[Zauber] = {
-    case "Pentagramma" => Some(Pentagramma)
+    case "Pentagramma"    => Some(Pentagramma)
+    case "FlimFlamFunkel" => Some(FlimFlamFunkel)
   }
 
   implicit val encodeZauberfertigkeitswert: Encoder[Zauberfertigkeitswert] = Encoder.encodeInt.contramap(_.value)
@@ -203,9 +205,11 @@ object instances {
 
   implicit val encodeTalent: KeyEncoder[Talent] = {
     case Sinnenschaerfe => "Sinnenschärfe"
+    case Alchemie       => "Alchemie"
   }
   implicit val decodeTalent: KeyDecoder[Talent] = {
     case "Sinnenschärfe" => Some(Sinnenschaerfe)
+    case "Alchemie"      => Some(Alchemie)
   }
 
   implicit val encodeTalentwert: Encoder[Talentwert] = Encoder.encodeInt.contramap(_.value)
@@ -260,9 +264,11 @@ object instances {
 
   implicit val encodeSonderfertigkeit: Encoder[Sonderfertigkeit] = {
     case Ausweichen1 => "Ausweichen 1".asJson
+    case Ausweichen2 => "Ausweichen 2".asJson
   }
   implicit val decodeSonderfertigkeit: Decoder[Sonderfertigkeit] = Decoder.decodeString.map {
     case "Ausweichen 1" => Ausweichen1
+    case "Ausweichen 2" => Ausweichen2
   }
 
   implicit val encodeSonderfertigkeitenDiff: Encoder[SonderfertigkeitenDiff] =
@@ -280,10 +286,12 @@ object instances {
     } yield SonderfertigkeitenDiff(add = add, remove = remove)
 
   implicit val encodeVorteil: Encoder[Vorteil] = {
-    case GutesGedaechtnis => "Gutes Gedächtnis".asJson
+    case GutesGedaechtnis       => "Gutes Gedächtnis".asJson
+    case EidetischesGedaechtnis => "Eidetisches Gedächtnis".asJson
   }
   implicit val decodeVorteil: Decoder[Vorteil] = Decoder.decodeString.map {
-    case "Gutes Gedächtnis" => GutesGedaechtnis
+    case "Gutes Gedächtnis"       => GutesGedaechtnis
+    case "Eidetisches Gedächtnis" => EidetischesGedaechtnis
   }
 
   implicit val encodeVorteilDiff: Encoder[VorteilDiff] =
@@ -302,9 +310,11 @@ object instances {
 
   implicit val encodeNachteil: Encoder[Nachteil] = {
     case Arroganz => "Arroganz".asJson
+    case Goldgier => "Goldgier".asJson
   }
   implicit val decodeNachteil: Decoder[Nachteil] = Decoder.decodeString.map {
     case "Arroganz" => Arroganz
+    case "Goldgier" => Goldgier
   }
 
   implicit val encodeNachteilDiff: Encoder[NachteilDiff] =

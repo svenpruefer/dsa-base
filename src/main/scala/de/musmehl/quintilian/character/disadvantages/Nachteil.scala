@@ -21,4 +21,6 @@ sealed trait Nachteil {}
 
 object Nachteil {
   case object Arroganz extends Nachteil
+
+  case object Goldgier extends Nachteil
 }

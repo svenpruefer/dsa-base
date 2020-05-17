@@ -22,4 +22,5 @@ sealed trait Talent {}
 object Talent {
 
   case object Sinnenschaerfe extends Talent {}
+  case object Alchemie       extends Talent {}
 }

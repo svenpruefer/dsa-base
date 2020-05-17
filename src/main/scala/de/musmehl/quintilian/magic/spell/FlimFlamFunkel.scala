@@ -15,12 +15,16 @@
  * You should have received a copy of the GNU General Public License
  * along with quintilian.  If not, see <https://www.gnu.org/licenses/>.
  */
-package de.musmehl.quintilian.character.skills
+package de.musmehl.quintilian.magic.spell
+import de.musmehl.quintilian.character.properties.Eigenschaft
+import de.musmehl.quintilian.character.properties.Eigenschaft.{Fingerfertigkeit, Klugheit}
+import de.musmehl.quintilian.magic.SpellAttribute
+import de.musmehl.quintilian.magic.SpellAttribute.Umwelt
 
-trait Sonderfertigkeit {}
+object FlimFlamFunkel extends Zauber {
+  override def displayName: String = "Flim Flam Funkel"
 
-object Sonderfertigkeit {
-  case object Ausweichen1 extends Sonderfertigkeit
+  override def eigenschaften: List[Eigenschaft] = List[Eigenschaft](Klugheit, Klugheit, Fingerfertigkeit)
 
-  case object Ausweichen2 extends Sonderfertigkeit
+  override def merkmale: Set[SpellAttribute] = Set(Umwelt)
 }
