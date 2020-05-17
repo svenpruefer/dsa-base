@@ -21,7 +21,8 @@ import de.musmehl.quintilian.character.properties.Eigenschaft.{Fingerfertigkeit,
 import de.musmehl.quintilian.magic.SpellAttribute
 import de.musmehl.quintilian.magic.SpellAttribute.Umwelt
 
-object FlimFlamFunkel extends Zauber {
+case object FlimFlamFunkel extends Zauber {
+
   override def displayName: String = "Flim Flam Funkel"
 
   override def eigenschaften: List[Eigenschaft] = List[Eigenschaft](Klugheit, Klugheit, Fingerfertigkeit)
