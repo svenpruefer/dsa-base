@@ -18,18 +18,16 @@
 package de.musmehl.quintilian.serialization.generators
 
 import de.musmehl.quintilian.character.properties.Eigenschaft.Eigenschaften
-import de.musmehl.quintilian.character.properties.Eigenschaftswert
+import de.musmehl.quintilian.character.properties.{EigenschaftsDiff, Eigenschaftswert, EnergieDiff, Energiewert, KampfDiff, Kampfwert}
 import de.musmehl.quintilian.character.properties.Energie.Energien
-import de.musmehl.quintilian.character.properties.Energiewert
 import de.musmehl.quintilian.character.properties.Kampf.Kampfwerte
-import de.musmehl.quintilian.character.properties.Kampfwert
-import de.musmehl.quintilian.character.Character
-import de.musmehl.quintilian.character.advantages.Vorteil
-import de.musmehl.quintilian.character.disadvantages.Nachteil
-import de.musmehl.quintilian.character.skills.Sonderfertigkeit
-import de.musmehl.quintilian.character.talents.kampf.{Kampftalent, Kampftalentwert}
-import de.musmehl.quintilian.character.talents.{Talent, Talentwert}
-import de.musmehl.quintilian.magic.spell.{FlimFlamFunkel, Pentagramma, Zauber, Zauberfertigkeitswert}
+import de.musmehl.quintilian.character.{Character, CharacterDiff}
+import de.musmehl.quintilian.character.advantages.{Vorteil, VorteilDiff}
+import de.musmehl.quintilian.character.disadvantages.{Nachteil, NachteilDiff}
+import de.musmehl.quintilian.character.skills.{Sonderfertigkeit, SonderfertigkeitenDiff}
+import de.musmehl.quintilian.character.talents.kampf.{Kampftalent, KampftalenteDiff, Kampftalentwert, KampftalentwertDiff}
+import de.musmehl.quintilian.character.talents.{Talent, TalentDiff, Talentwert}
+import de.musmehl.quintilian.magic.spell.{FlimFlamFunkel, Pentagramma, Zauber, ZauberDiff, Zauberfertigkeitswert}
 import org.scalacheck.Gen
 
 object instances {
@@ -54,6 +52,26 @@ object instances {
     Eigenschaftswert.Koerperkraft(koerperkraft)
   )
 
+  val genEigenschaftsDiff: Gen[EigenschaftsDiff] = for {
+    mut              <- Gen.chooseNum[Int](-10, 10)
+    klugheit         <- Gen.chooseNum[Int](-10, 10)
+    intuition        <- Gen.chooseNum[Int](-10, 10)
+    charisma         <- Gen.chooseNum[Int](-10, 10)
+    fingerfertigkeit <- Gen.chooseNum[Int](-10, 10)
+    gewandheit       <- Gen.chooseNum[Int](-10, 10)
+    kondition        <- Gen.chooseNum[Int](-10, 10)
+    koerperkraft     <- Gen.chooseNum[Int](-10, 10)
+  } yield EigenschaftsDiff(
+    mut = mut,
+    klugheit = klugheit,
+    intuition = intuition,
+    charisma = charisma,
+    fingerfertigkeit = fingerfertigkeit,
+    gewandheit = gewandheit,
+    kondition = kondition,
+    koerperkraft = koerperkraft
+  )
+
   val genEnergien: Gen[Energien] = for {
     lebensenergie <- Gen.chooseNum[Int](1, 60)
     ausdauer      <- Gen.chooseNum[Int](1, 60)
@@ -66,16 +84,40 @@ object instances {
     Energiewert.Karmaenergie(karmaenergie)
   )
 
+  val genEnergieDiff: Gen[EnergieDiff] = for {
+    lebensenergie <- Gen.chooseNum[Int](-10, 10)
+    ausdauer      <- Gen.chooseNum[Int](-10, 10)
+    astralenergie <- Gen.chooseNum[Int](-10, 10)
+    karmaenergie  <- Gen.chooseNum[Int](-10, 10)
+  } yield EnergieDiff(
+    lebensenergie = lebensenergie,
+    ausdauer = ausdauer,
+    astralenergie = astralenergie,
+    karmaenergie = karmaenergie
+  )
+
   val genKampfwerte: Gen[Kampfwerte] = for {
     attacke    <- Gen.chooseNum[Int](0, 12)
     parade     <- Gen.chooseNum[Int](0, 12)
     fernkampf  <- Gen.chooseNum[Int](0, 12)
     initiative <- Gen.chooseNum[Int](0, 20)
   } yield Kampfwerte(
-    Kampfwert.Attacke(attacke),
-    Kampfwert.Parade(parade),
-    Kampfwert.Fernkampf(fernkampf),
-    Kampfwert.Initiative(initiative)
+    attacke = Kampfwert.Attacke(attacke),
+    parade = Kampfwert.Parade(parade),
+    fernkampf = Kampfwert.Fernkampf(fernkampf),
+    initiative = Kampfwert.Initiative(initiative)
+  )
+
+  val genKampfDiff: Gen[KampfDiff] = for {
+    attacke    <- Gen.chooseNum[Int](-10, 10)
+    parade     <- Gen.chooseNum[Int](-10, 10)
+    fernkampf  <- Gen.chooseNum[Int](-10, 10)
+    initiative <- Gen.chooseNum[Int](-10, 10)
+  } yield KampfDiff(
+    attacke = attacke,
+    parade = parade,
+    fernkampf = fernkampf,
+    initiative = initiative
   )
 
   val genTalent: Gen[Talent] = Gen.oneOf[Talent](
@@ -89,6 +131,16 @@ object instances {
       talentwert <- genTalentwert
     } yield (talent, talentwert)
   )
+
+  val genTalentDiff: Gen[TalentDiff] = Gen
+    .mapOf(
+      for {
+        talent     <- genTalent
+        talentwert <- Gen.chooseNum[Int](1, 10) // TODO zero diff is actually allowed
+        sign       <- Gen.oneOf[Int](-1, 1)
+      } yield (talent, sign * talentwert)
+    )
+    .map(TalentDiff(_))
 
   val genKampftalent: Gen[Kampftalent] = Gen.oneOf[Kampftalent](
     Kampftalent.Saebel,
@@ -105,7 +157,20 @@ object instances {
     } yield (kampftalent, kampftalentwert)
   )
 
-  val genZauber: Gen[Zauber] = Gen.oneOf(
+  val genKampfwertDiff: Gen[KampftalentwertDiff] = for {
+    attacke <- Gen.chooseNum[Int](-10, 10)
+    parade  <- Gen.chooseNum[Int](-10, 10)
+  } yield KampftalentwertDiff(attacke = attacke, parade = parade)
+  val genKampftalenteDiff: Gen[KampftalenteDiff] = Gen
+    .mapOf(
+      for {
+        kampftalent     <- genKampftalent
+        kampftalentwert <- genKampfwertDiff
+      } yield (kampftalent, kampftalentwert)
+    )
+    .map(KampftalenteDiff(_))
+
+  val genZauber: Gen[Zauber] = Gen.oneOf[Zauber](
     Pentagramma,
     FlimFlamFunkel
   )
@@ -117,11 +182,26 @@ object instances {
     } yield (zauber, zauberfertigkeitswert)
   )
 
+  val genZauberDiff: Gen[ZauberDiff] = Gen
+    .mapOf(
+      for {
+        zauber                    <- genZauber
+        zauberfertigkeitswertDiff <- Gen.chooseNum[Int](1, 10) // TODO zero diff is actually allowed
+        sign                      <- Gen.oneOf[Int](-1, 1)
+      } yield (zauber, sign * zauberfertigkeitswertDiff)
+    )
+    .map(ZauberDiff(_))
+
   val genSonderfertigkeit: Gen[Sonderfertigkeit] = Gen.oneOf[Sonderfertigkeit](
     Sonderfertigkeit.Ausweichen1,
     Sonderfertigkeit.Ausweichen2
   )
   val genSonderfertigkeiten: Gen[Set[Sonderfertigkeit]] = Gen.containerOf[Set, Sonderfertigkeit](genSonderfertigkeit)
+
+  val genSonderfertigkeitenDiff: Gen[SonderfertigkeitenDiff] = for {
+    add    <- genSonderfertigkeiten
+    remove <- genSonderfertigkeiten
+  } yield SonderfertigkeitenDiff(add, remove.diff(add))
 
   val genVorteil: Gen[Vorteil] = Gen.oneOf[Vorteil](
     Vorteil.GutesGedaechtnis,
@@ -129,11 +209,21 @@ object instances {
   )
   val genVorteile: Gen[Set[Vorteil]] = Gen.containerOf[Set, Vorteil](genVorteil)
 
+  val genVorteilDiff: Gen[VorteilDiff] = for {
+    add    <- genVorteile
+    remove <- genVorteile
+  } yield VorteilDiff(add, remove.diff(add))
+
   val genNachteil: Gen[Nachteil] = Gen.oneOf[Nachteil](
     Nachteil.Arroganz,
     Nachteil.Goldgier
   )
   val genNachteile: Gen[Set[Nachteil]] = Gen.containerOf[Set, Nachteil](genNachteil)
+
+  val genNachteilDiff: Gen[NachteilDiff] = for {
+    add    <- genNachteile
+    remove <- genNachteile
+  } yield NachteilDiff(add, remove.diff(add))
 
   val genCharacter: Gen[Character] = for {
     eigenschaften      <- genEigenschaften
@@ -146,6 +236,28 @@ object instances {
     vorteile           <- genVorteile
     nachteile          <- genNachteile
   } yield Character(
+    eigenschaften,
+    energien,
+    kampfwerte,
+    talente,
+    kampftalente,
+    zauber,
+    sonderfertigkeiten,
+    vorteile,
+    nachteile
+  )
+
+  val genCharacterDiff: Gen[CharacterDiff] = for {
+    eigenschaften      <- genEigenschaftsDiff
+    energien           <- genEnergieDiff
+    kampfwerte         <- genKampfDiff
+    talente            <- genTalentDiff
+    kampftalente       <- genKampftalenteDiff
+    zauber             <- genZauberDiff
+    sonderfertigkeiten <- genSonderfertigkeitenDiff
+    vorteile           <- genVorteilDiff
+    nachteile          <- genNachteilDiff
+  } yield CharacterDiff(
     eigenschaften,
     energien,
     kampfwerte,
