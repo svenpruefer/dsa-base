@@ -32,7 +32,7 @@ import de.musmehl.quintilian.character.talents.{Talent, TalentDiff, Talentwert}
 import de.musmehl.quintilian.character.talents.Talent.{Alchemie, Sinnenschaerfe}
 import de.musmehl.quintilian.character.talents.kampf.Kampftalent.{Saebel, Staebe}
 import de.musmehl.quintilian.character.talents.kampf.{Kampftalent, KampftalenteDiff, Kampftalentwert, KampftalentwertDiff}
-import de.musmehl.quintilian.magic.spell.{FlimFlamFunkel, Pentagramma, Zauber, ZauberDiff, Zauberfertigkeitswert}
+import de.musmehl.quintilian.magic.spell.{BoeserBlick, FlimFlamFunkel, OculusAstralis, Pentagramma, Zauber, ZauberDiff, Zauberfertigkeitswert}
 import io.circe._
 import io.circe.syntax._
 import cats.implicits._
@@ -185,11 +185,15 @@ object instances {
 
   implicit val encodeZauber: KeyEncoder[Zauber] = {
     case Pentagramma    => "Pentagramma"
-    case FlimFlamFunkel => "FlimFlamFunkel"
+    case FlimFlamFunkel => "Flim Flam Funkel"
+    case BoeserBlick    => "Böser Blick"
+    case OculusAstralis => "Oculus Astralis"
   }
   implicit val decodeZauber: KeyDecoder[Zauber] = {
-    case "Pentagramma"    => Some(Pentagramma)
-    case "FlimFlamFunkel" => Some(FlimFlamFunkel)
+    case "Pentagramma"      => Some(Pentagramma)
+    case "Flim Flam Funkel" => Some(FlimFlamFunkel)
+    case "Böser Blick"      => Some(BoeserBlick)
+    case "Oculus Astralis"  => Some(OculusAstralis)
   }
 
   implicit val encodeZauberfertigkeitswert: Encoder[Zauberfertigkeitswert] = Encoder.encodeInt.contramap(_.value)
