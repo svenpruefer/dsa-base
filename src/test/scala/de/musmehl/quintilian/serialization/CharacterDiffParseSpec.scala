@@ -18,13 +18,17 @@
 package de.musmehl.quintilian.serialization
 
 import de.musmehl.quintilian.character.CharacterDiff
+import de.musmehl.quintilian.magic.spell.{BoeserBlick, Zauber, ZauberDiff}
 import de.musmehl.quintilian.serialization.generators.instances._
 import de.musmehl.quintilian.serialization.instances._
 import io.circe.syntax._
+import io.circe.yaml
 import org.scalactic.TypeCheckedTripleEquals
 import org.scalatest.OptionValues._
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
+
+import scala.io.Source
 
 class CharacterDiffParseSpec extends AnyWordSpec with ScalaCheckDrivenPropertyChecks with TypeCheckedTripleEquals {
 
@@ -37,6 +41,16 @@ class CharacterDiffParseSpec extends AnyWordSpec with ScalaCheckDrivenPropertyCh
         forAll(genCharacterDiff) { characterDiff: CharacterDiff =>
           assert(characterDiff.asJson.as[CharacterDiff].toOption.value === characterDiff)
         }
+      }
+    }
+
+    "be parsable" when {
+      "it contains a single spell" in {
+        val input = Source.fromInputStream(getClass.getResourceAsStream("ruby-eye.yaml")).mkString
+
+        val expectedResult = CharacterDiff(zauber = ZauberDiff(Map[Zauber, Int](BoeserBlick -> 5)))
+
+        assert(yaml.parser.parse(input).flatMap(_.as[CharacterDiff]).toOption.value === expectedResult)
       }
     }
   }
