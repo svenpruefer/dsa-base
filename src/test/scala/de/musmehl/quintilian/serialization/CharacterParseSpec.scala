@@ -34,10 +34,10 @@ import de.musmehl.quintilian.character.talents.Talent.Sinnenschaerfe
 import de.musmehl.quintilian.character.talents.kampf.Kampftalent.Staebe
 import de.musmehl.quintilian.character.talents.kampf.{Kampftalent, Kampftalentwert}
 import de.musmehl.quintilian.character.talents.{Talent, Talentwert}
+import de.musmehl.quintilian.liturgies.{Liturgie, Liturgiefertigkeitswert}
 import de.musmehl.quintilian.magic.spell.{Pentagramma, Zauber, Zauberfertigkeitswert}
 import de.musmehl.quintilian.serialization.instances._
 import de.musmehl.quintilian.serialization.generators.instances._
-
 import io.circe.yaml
 import io.circe.syntax._
 import org.scalactic.TypeCheckedTripleEquals
@@ -97,7 +97,8 @@ class CharacterParseSpec extends AnyWordSpec with ScalaCheckDrivenPropertyChecks
           ),
           nachteile = Set(
             Arroganz
-          )
+          ),
+          liturgien = Map[Liturgie, Liturgiefertigkeitswert]()
         )
 
         assert(yaml.parser.parse(input).flatMap(_.as[Character]).toOption.value === expectedResult)
@@ -134,7 +135,8 @@ class CharacterParseSpec extends AnyWordSpec with ScalaCheckDrivenPropertyChecks
           zauber = Map[Zauber, Zauberfertigkeitswert](),
           sonderfertigkeiten = Set[Sonderfertigkeit](),
           vorteile = Set[Vorteil](),
-          nachteile = Set[Nachteil]()
+          nachteile = Set[Nachteil](),
+          liturgien = Map((Liturgie.Glueckssegen, Liturgiefertigkeitswert(7)))
         )
 
         assert(yaml.parser.parse(input).flatMap(_.as[Character]).toOption.value === expectedResult)

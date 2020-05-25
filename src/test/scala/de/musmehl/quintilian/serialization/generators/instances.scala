@@ -27,6 +27,7 @@ import de.musmehl.quintilian.character.disadvantages.{Nachteil, NachteilDiff}
 import de.musmehl.quintilian.character.skills.{Sonderfertigkeit, SonderfertigkeitenDiff}
 import de.musmehl.quintilian.character.talents.kampf.{Kampftalent, KampftalenteDiff, Kampftalentwert, KampftalentwertDiff}
 import de.musmehl.quintilian.character.talents.{Talent, TalentDiff, Talentwert}
+import de.musmehl.quintilian.liturgies.{Liturgie, LiturgieDiff, Liturgiefertigkeitswert}
 import de.musmehl.quintilian.magic.spell.{FlimFlamFunkel, Pentagramma, Zauber, ZauberDiff, Zauberfertigkeitswert}
 import org.scalacheck.Gen
 
@@ -225,6 +226,25 @@ object instances {
     remove <- genNachteile
   } yield NachteilDiff(add, remove.diff(add))
 
+  val genLiturgie: Gen[Liturgie] = Gen.oneOf[Liturgie](
+    Liturgie.Glueckssegen,
+    Liturgie.Friedenslied
+  )
+  val genLiturgiefertigkeitswert: Gen[Liturgiefertigkeitswert] = Gen.chooseNum(-5, 25).map(Liturgiefertigkeitswert)
+  val genLiturgien: Gen[Map[Liturgie, Liturgiefertigkeitswert]] = Gen.mapOf(for {
+    liturgie                <- genLiturgie
+    liturgiefertigkeitswert <- genLiturgiefertigkeitswert
+  } yield (liturgie, liturgiefertigkeitswert))
+  val genLiturgieDiff: Gen[LiturgieDiff] = Gen
+    .mapOf(
+      for {
+        liturgie                    <- genLiturgie
+        liturgiefertigkeitswertDiff <- Gen.chooseNum[Int](1, 10) // TODO zero diff is actually allowed
+        sign                        <- Gen.oneOf[Int](-1, 1)
+      } yield (liturgie, sign * liturgiefertigkeitswertDiff)
+    )
+    .map(LiturgieDiff(_))
+
   val genCharacter: Gen[Character] = for {
     eigenschaften      <- genEigenschaften
     energien           <- genEnergien
@@ -235,6 +255,7 @@ object instances {
     sonderfertigkeiten <- genSonderfertigkeiten
     vorteile           <- genVorteile
     nachteile          <- genNachteile
+    liturgien          <- genLiturgien
   } yield Character(
     eigenschaften,
     energien,
@@ -244,7 +265,8 @@ object instances {
     zauber,
     sonderfertigkeiten,
     vorteile,
-    nachteile
+    nachteile,
+    liturgien
   )
 
   val genCharacterDiff: Gen[CharacterDiff] = for {
@@ -257,6 +279,7 @@ object instances {
     sonderfertigkeiten <- genSonderfertigkeitenDiff
     vorteile           <- genVorteilDiff
     nachteile          <- genNachteilDiff
+    liturgien          <- genLiturgieDiff
   } yield CharacterDiff(
     eigenschaften,
     energien,
@@ -266,7 +289,8 @@ object instances {
     zauber,
     sonderfertigkeiten,
     vorteile,
-    nachteile
+    nachteile,
+    liturgien
   )
 
 }

@@ -36,6 +36,9 @@ import de.musmehl.quintilian.magic.spell.{BoeserBlick, FlimFlamFunkel, OculusAst
 import io.circe._
 import io.circe.syntax._
 import cats.implicits._
+import de.musmehl.quintilian.liturgies
+import de.musmehl.quintilian.liturgies.Liturgie.{Friedenslied, Glueckssegen}
+import de.musmehl.quintilian.liturgies.{Liturgie, LiturgieDiff, Liturgiefertigkeitswert}
 
 object instances {
 
@@ -335,6 +338,26 @@ object instances {
       remove <- c.getOrElse[Set[Nachteil]]("remove")(Set.empty[Nachteil])
     } yield NachteilDiff(add = add, remove = remove)
 
+  implicit val encodeLiturgie: KeyEncoder[Liturgie] = {
+    case Friedenslied => "Friedenslied"
+    case Glueckssegen => "Glückssegen"
+  }
+  implicit val decodeLiturgie: KeyDecoder[Liturgie] = {
+    case "Friedenslied" => Some(Friedenslied)
+    case "Glückssegen"  => Some(Glueckssegen)
+  }
+
+  implicit val encodeLiturgiefertigkeitswert: Encoder[Liturgiefertigkeitswert] = Encoder.encodeInt.contramap(_.value)
+  implicit val decodeLiturgiefertigkeitswert: Decoder[Liturgiefertigkeitswert] =
+    Decoder.decodeInt.map(Liturgiefertigkeitswert)
+
+  implicit val encodeLiturgieDiff: Encoder[LiturgieDiff] = Encoder
+    .encodeMap[Liturgie, Int](encodeLiturgie, encodeNonZeroInt)
+    .contramap[LiturgieDiff](_.diffs)
+    .mapJson(_.deepDropNullValues)
+  implicit val decodeLiturgieDiff: Decoder[LiturgieDiff] =
+    Decoder.decodeMap[Liturgie, Int](decodeLiturgie, Decoder.decodeInt).map(liturgies.LiturgieDiff(_))
+
   implicit val encodeCharacter: Encoder[Character] = (character: Character) =>
     Json.obj(
       ("Eigenschaften", character.eigenschaften.asJson),
@@ -345,7 +368,8 @@ object instances {
       ("Zauber", character.zauber.asJson),
       ("Sonderfertigkeiten", character.sonderfertigkeiten.asJson),
       ("Vorteile", character.vorteile.asJson),
-      ("Nachteile", character.nachteile.asJson)
+      ("Nachteile", character.nachteile.asJson),
+      ("Liturgien", character.liturgien.asJson)
     )
 
   implicit val decodeCharacter: Decoder[Character] = (c: HCursor) =>
@@ -359,16 +383,18 @@ object instances {
       sonderfertigkeiten <- c.downField("Sonderfertigkeiten").as[Set[Sonderfertigkeit]]
       vorteile           <- c.downField("Vorteile").as[Set[Vorteil]]
       nachteile          <- c.downField("Nachteile").as[Set[Nachteil]]
+      liturgien          <- c.downField("Liturgien").as[Map[Liturgie, Liturgiefertigkeitswert]]
     } yield Character(
-      eigenschaften,
-      energien,
-      kampfwerte,
-      talente,
-      kampftalente,
-      zauber,
-      sonderfertigkeiten,
-      vorteile,
-      nachteile
+      eigenschaften = eigenschaften,
+      energien = energien,
+      kampfwerte = kampfwerte,
+      talente = talente,
+      kampftalente = kampftalente,
+      zauber = zauber,
+      sonderfertigkeiten = sonderfertigkeiten,
+      vorteile = vorteile,
+      nachteile = nachteile,
+      liturgien = liturgien
     )
 
   implicit val encodeCharacterDiff: Encoder[CharacterDiff] = (characterDiff: CharacterDiff) =>
@@ -382,7 +408,8 @@ object instances {
         ("Zauber", characterDiff.zauber.asJson),
         ("Sonderfertigkeiten", characterDiff.sonderfertigkeiten.asJson),
         ("Vorteile", characterDiff.vorteile.asJson),
-        ("Nachteile", characterDiff.nachteile.asJson)
+        ("Nachteile", characterDiff.nachteile.asJson),
+        ("Liturgien", characterDiff.liturgien.asJson)
       )
       .dropNullValues
 
@@ -397,6 +424,7 @@ object instances {
       sonderfertigkeiten <- c.getOrElse[SonderfertigkeitenDiff]("Sonderfertigkeiten")(SonderfertigkeitenDiff.empty)
       vorteile           <- c.getOrElse[VorteilDiff]("Vorteile")(VorteilDiff.empty)
       nachteile          <- c.getOrElse[NachteilDiff]("Nachteile")(NachteilDiff.empty)
+      liturgien          <- c.getOrElse[LiturgieDiff]("Liturgien")(LiturgieDiff.empty)
     } yield CharacterDiff(
       eigenschaften = eigenschaften,
       energien = energien,
@@ -406,6 +434,7 @@ object instances {
       zauber = zauber,
       sonderfertigkeiten = sonderfertigkeiten,
       vorteile = vorteile,
-      nachteile = nachteile
+      nachteile = nachteile,
+      liturgien = liturgien
     )
 }

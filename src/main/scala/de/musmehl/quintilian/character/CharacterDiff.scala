@@ -23,6 +23,7 @@ import de.musmehl.quintilian.character.properties.{EigenschaftsDiff, EnergieDiff
 import de.musmehl.quintilian.character.skills.SonderfertigkeitenDiff
 import de.musmehl.quintilian.character.talents.TalentDiff
 import de.musmehl.quintilian.character.talents.kampf.KampftalenteDiff
+import de.musmehl.quintilian.liturgies.LiturgieDiff
 import de.musmehl.quintilian.magic.spell.ZauberDiff
 
 final case class CharacterDiff(
@@ -34,7 +35,8 @@ final case class CharacterDiff(
     zauber: ZauberDiff = ZauberDiff.empty,
     sonderfertigkeiten: SonderfertigkeitenDiff = SonderfertigkeitenDiff.empty,
     vorteile: VorteilDiff = VorteilDiff.empty,
-    nachteile: NachteilDiff = NachteilDiff.empty
+    nachteile: NachteilDiff = NachteilDiff.empty,
+    liturgien: LiturgieDiff = LiturgieDiff.empty
 ) {
   def applyTo(character: Character): Character =
     character.copy(
@@ -46,7 +48,8 @@ final case class CharacterDiff(
       zauber = zauber.applyTo(character.zauber),
       sonderfertigkeiten = sonderfertigkeiten.applyTo(character.sonderfertigkeiten),
       vorteile = vorteile.applyTo(character.vorteile),
-      nachteile = nachteile.applyTo(character.nachteile)
+      nachteile = nachteile.applyTo(character.nachteile),
+      liturgien = liturgien.applyTo(character.liturgien)
     )
 }
 

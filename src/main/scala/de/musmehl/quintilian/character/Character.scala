@@ -26,6 +26,7 @@ import de.musmehl.quintilian.character.skills.Sonderfertigkeit
 import de.musmehl.quintilian.character.talents.Talent
 import de.musmehl.quintilian.character.talents.Talentwert
 import de.musmehl.quintilian.character.talents.kampf.{Kampftalent, Kampftalentwert}
+import de.musmehl.quintilian.liturgies.{Liturgie, Liturgiefertigkeitswert}
 import de.musmehl.quintilian.magic.spell.Zauber
 import de.musmehl.quintilian.magic.spell.Zauberfertigkeitswert
 
@@ -44,5 +45,6 @@ final case class Character(
     zauber: Map[Zauber, Zauberfertigkeitswert],
     sonderfertigkeiten: Set[Sonderfertigkeit],
     vorteile: Set[Vorteil],
-    nachteile: Set[Nachteil]
+    nachteile: Set[Nachteil],
+    liturgien: Map[Liturgie, Liturgiefertigkeitswert]
 ) {}
