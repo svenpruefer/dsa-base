@@ -138,9 +138,8 @@ object instances {
     .mapOf(
       for {
         talent     <- genTalent
-        talentwert <- Gen.chooseNum[Int](1, 10) // TODO zero diff is actually allowed
-        sign       <- Gen.oneOf[Int](-1, 1)
-      } yield (talent, sign * talentwert)
+        talentwert <- Gen.chooseNum[Int](-10, 10)
+      } yield (talent, talentwert)
     )
     .map(TalentDiff(_))
 
@@ -188,9 +187,8 @@ object instances {
     .mapOf(
       for {
         zauber                    <- genZauber
-        zauberfertigkeitswertDiff <- Gen.chooseNum[Int](1, 10) // TODO zero diff is actually allowed
-        sign                      <- Gen.oneOf[Int](-1, 1)
-      } yield (zauber, sign * zauberfertigkeitswertDiff)
+        zauberfertigkeitswertDiff <- Gen.chooseNum[Int](-10, 10)
+      } yield (zauber, zauberfertigkeitswertDiff)
     )
     .map(ZauberDiff(_))
 
@@ -240,9 +238,8 @@ object instances {
     .mapOf(
       for {
         liturgie                    <- genLiturgie
-        liturgiefertigkeitswertDiff <- Gen.chooseNum[Int](1, 10) // TODO zero diff is actually allowed
-        sign                        <- Gen.oneOf[Int](-1, 1)
-      } yield (liturgie, sign * liturgiefertigkeitswertDiff)
+        liturgiefertigkeitswertDiff <- Gen.chooseNum[Int](-10, 10)
+      } yield (liturgie, liturgiefertigkeitswertDiff)
     )
     .map(LiturgieDiff(_))
 

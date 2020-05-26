@@ -18,11 +18,14 @@
 package de.musmehl.quintilian.serialization
 
 import de.musmehl.quintilian.character.CharacterDiff
+import de.musmehl.quintilian.character.talents.TalentDiff
+import de.musmehl.quintilian.liturgies.LiturgieDiff
 import de.musmehl.quintilian.magic.spell.{BoeserBlick, Zauber, ZauberDiff}
 import de.musmehl.quintilian.serialization.generators.instances._
 import de.musmehl.quintilian.serialization.instances._
 import io.circe.syntax._
 import io.circe.yaml
+import cats.implicits._
 import org.scalactic.TypeCheckedTripleEquals
 import org.scalatest.OptionValues._
 import org.scalatest.wordspec.AnyWordSpec
@@ -39,7 +42,10 @@ class CharacterDiffParseSpec extends AnyWordSpec with ScalaCheckDrivenPropertyCh
     "stay the same" when {
       "it is serialized and deserialized in a round-trip" in {
         forAll(genCharacterDiff) { characterDiff: CharacterDiff =>
-          assert(characterDiff.asJson.as[CharacterDiff].toOption.value === characterDiff)
+          assert(
+            characterDiff.asJson.as[CharacterDiff].toOption.value === CharacterDiffParseSpec
+              .removeEmptyDiffEntries(characterDiff)
+          )
         }
       }
     }
@@ -53,5 +59,16 @@ class CharacterDiffParseSpec extends AnyWordSpec with ScalaCheckDrivenPropertyCh
         assert(yaml.parser.parse(input).flatMap(_.as[CharacterDiff]).toOption.value === expectedResult)
       }
     }
+  }
+}
+
+object CharacterDiffParseSpec {
+  def removeEmptyDiffEntries(characterDiff: CharacterDiff): CharacterDiff = {
+    def removeZeroEntriesFromMap[T](map: Map[T, Int]): Map[T, Int] = map.filterNot { case (_, value) => value === 0 }
+    characterDiff.copy(
+      talente = TalentDiff(removeZeroEntriesFromMap(characterDiff.talente.diffs)),
+      zauber = ZauberDiff(removeZeroEntriesFromMap(characterDiff.zauber.diffs)),
+      liturgien = LiturgieDiff(removeZeroEntriesFromMap(characterDiff.liturgien.diffs))
+    )
   }
 }
