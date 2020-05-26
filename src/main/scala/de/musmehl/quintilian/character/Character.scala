@@ -29,6 +29,7 @@ import de.musmehl.quintilian.character.talents.kampf.{Kampftalent, Kampftalentwe
 import de.musmehl.quintilian.liturgies.{Liturgie, Liturgiefertigkeitswert}
 import de.musmehl.quintilian.magic.spell.Zauber
 import de.musmehl.quintilian.magic.spell.Zauberfertigkeitswert
+import de.musmehl.quintilian.rituals.Ritual
 
 /**
   * A stateless DSA character.
@@ -46,5 +47,6 @@ final case class Character(
     sonderfertigkeiten: Set[Sonderfertigkeit],
     vorteile: Set[Vorteil],
     nachteile: Set[Nachteil],
-    liturgien: Map[Liturgie, Liturgiefertigkeitswert]
+    liturgien: Map[Liturgie, Liturgiefertigkeitswert],
+    rituale: Set[Ritual]
 ) {}

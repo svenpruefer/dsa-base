@@ -39,6 +39,8 @@ import cats.implicits._
 import de.musmehl.quintilian.liturgies
 import de.musmehl.quintilian.liturgies.Liturgie.{Friedenslied, Glueckssegen}
 import de.musmehl.quintilian.liturgies.{Liturgie, LiturgieDiff, Liturgiefertigkeitswert}
+import de.musmehl.quintilian.rituals.Ritual.{Apport, Bindung}
+import de.musmehl.quintilian.rituals.{Ritual, RitualDiff}
 
 object instances {
 
@@ -358,6 +360,29 @@ object instances {
   implicit val decodeLiturgieDiff: Decoder[LiturgieDiff] =
     Decoder.decodeMap[Liturgie, Int](decodeLiturgie, Decoder.decodeInt).map(liturgies.LiturgieDiff(_))
 
+  implicit val encodeRitual: Encoder[Ritual] = {
+    case Apport  => "Apport".asJson
+    case Bindung => "Bindung".asJson
+  }
+  implicit val decodeRitual: Decoder[Ritual] = Decoder.decodeString.map {
+    case "Apport"  => Apport
+    case "Bindung" => Bindung
+  }
+
+  implicit val encodeRitualDiff: Encoder[RitualDiff] =
+    (ritualDiff: RitualDiff) =>
+      Json
+        .obj(
+          ("add", ritualDiff.add.asJson(encodeNonEmptySet[Ritual])),
+          ("remove", ritualDiff.remove.asJson(encodeNonEmptySet[Ritual]))
+        )
+        .dropNullValues
+  implicit val decodeRitualDiff: Decoder[RitualDiff] = (c: HCursor) =>
+    for {
+      add    <- c.getOrElse[Set[Ritual]]("add")(Set.empty[Ritual])
+      remove <- c.getOrElse[Set[Ritual]]("remove")(Set.empty[Ritual])
+    } yield RitualDiff(add = add, remove = remove)
+
   implicit val encodeCharacter: Encoder[Character] = (character: Character) =>
     Json.obj(
       ("Eigenschaften", character.eigenschaften.asJson),
@@ -369,7 +394,8 @@ object instances {
       ("Sonderfertigkeiten", character.sonderfertigkeiten.asJson),
       ("Vorteile", character.vorteile.asJson),
       ("Nachteile", character.nachteile.asJson),
-      ("Liturgien", character.liturgien.asJson)
+      ("Liturgien", character.liturgien.asJson),
+      ("Rituale", character.rituale.asJson)
     )
 
   implicit val decodeCharacter: Decoder[Character] = (c: HCursor) =>
@@ -384,6 +410,7 @@ object instances {
       vorteile           <- c.downField("Vorteile").as[Set[Vorteil]]
       nachteile          <- c.downField("Nachteile").as[Set[Nachteil]]
       liturgien          <- c.downField("Liturgien").as[Map[Liturgie, Liturgiefertigkeitswert]]
+      rituale            <- c.downField("Rituale").as[Set[Ritual]]
     } yield Character(
       eigenschaften = eigenschaften,
       energien = energien,
@@ -394,7 +421,8 @@ object instances {
       sonderfertigkeiten = sonderfertigkeiten,
       vorteile = vorteile,
       nachteile = nachteile,
-      liturgien = liturgien
+      liturgien = liturgien,
+      rituale = rituale
     )
 
   implicit val encodeCharacterDiff: Encoder[CharacterDiff] = (characterDiff: CharacterDiff) =>
@@ -409,7 +437,8 @@ object instances {
         ("Sonderfertigkeiten", characterDiff.sonderfertigkeiten.asJson),
         ("Vorteile", characterDiff.vorteile.asJson),
         ("Nachteile", characterDiff.nachteile.asJson),
-        ("Liturgien", characterDiff.liturgien.asJson)
+        ("Liturgien", characterDiff.liturgien.asJson),
+        ("Rituale", characterDiff.rituale.asJson)
       )
       .dropNullValues
 
@@ -425,6 +454,7 @@ object instances {
       vorteile           <- c.getOrElse[VorteilDiff]("Vorteile")(VorteilDiff.empty)
       nachteile          <- c.getOrElse[NachteilDiff]("Nachteile")(NachteilDiff.empty)
       liturgien          <- c.getOrElse[LiturgieDiff]("Liturgien")(LiturgieDiff.empty)
+      rituale            <- c.getOrElse[RitualDiff]("Rituale")(RitualDiff.empty)
     } yield CharacterDiff(
       eigenschaften = eigenschaften,
       energien = energien,
@@ -435,6 +465,7 @@ object instances {
       sonderfertigkeiten = sonderfertigkeiten,
       vorteile = vorteile,
       nachteile = nachteile,
-      liturgien = liturgien
+      liturgien = liturgien,
+      rituale = rituale
     )
 }

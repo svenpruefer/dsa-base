@@ -29,6 +29,7 @@ import de.musmehl.quintilian.character.talents.kampf.{Kampftalent, KampftalenteD
 import de.musmehl.quintilian.character.talents.{Talent, TalentDiff, Talentwert}
 import de.musmehl.quintilian.liturgies.{Liturgie, LiturgieDiff, Liturgiefertigkeitswert}
 import de.musmehl.quintilian.magic.spell.{FlimFlamFunkel, Pentagramma, Zauber, ZauberDiff, Zauberfertigkeitswert}
+import de.musmehl.quintilian.rituals.{Ritual, RitualDiff}
 import org.scalacheck.Gen
 
 object instances {
@@ -245,6 +246,17 @@ object instances {
     )
     .map(LiturgieDiff(_))
 
+  val genRitual: Gen[Ritual] = Gen.oneOf[Ritual](
+    Ritual.Apport,
+    Ritual.Bindung
+  )
+  val genRituale: Gen[Set[Ritual]] = Gen.containerOf[Set, Ritual](genRitual)
+
+  val genRitualDiff: Gen[RitualDiff] = for {
+    add    <- genRituale
+    remove <- genRituale
+  } yield RitualDiff(add, remove.diff(add))
+
   val genCharacter: Gen[Character] = for {
     eigenschaften      <- genEigenschaften
     energien           <- genEnergien
@@ -256,6 +268,7 @@ object instances {
     vorteile           <- genVorteile
     nachteile          <- genNachteile
     liturgien          <- genLiturgien
+    rituale            <- genRituale
   } yield Character(
     eigenschaften,
     energien,
@@ -266,7 +279,8 @@ object instances {
     sonderfertigkeiten,
     vorteile,
     nachteile,
-    liturgien
+    liturgien,
+    rituale
   )
 
   val genCharacterDiff: Gen[CharacterDiff] = for {
@@ -280,6 +294,7 @@ object instances {
     vorteile           <- genVorteilDiff
     nachteile          <- genNachteilDiff
     liturgien          <- genLiturgieDiff
+    rituale            <- genRitualDiff
   } yield CharacterDiff(
     eigenschaften,
     energien,
@@ -290,7 +305,8 @@ object instances {
     sonderfertigkeiten,
     vorteile,
     nachteile,
-    liturgien
+    liturgien,
+    rituale
   )
 
 }

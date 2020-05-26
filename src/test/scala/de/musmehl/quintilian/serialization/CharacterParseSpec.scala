@@ -36,6 +36,8 @@ import de.musmehl.quintilian.character.talents.kampf.{Kampftalent, Kampftalentwe
 import de.musmehl.quintilian.character.talents.{Talent, Talentwert}
 import de.musmehl.quintilian.liturgies.{Liturgie, Liturgiefertigkeitswert}
 import de.musmehl.quintilian.magic.spell.{Pentagramma, Zauber, Zauberfertigkeitswert}
+import de.musmehl.quintilian.rituals.Ritual
+import de.musmehl.quintilian.rituals.Ritual.{Apport, Bindung}
 import de.musmehl.quintilian.serialization.instances._
 import de.musmehl.quintilian.serialization.generators.instances._
 import io.circe.yaml
@@ -98,7 +100,11 @@ class CharacterParseSpec extends AnyWordSpec with ScalaCheckDrivenPropertyChecks
           nachteile = Set(
             Arroganz
           ),
-          liturgien = Map[Liturgie, Liturgiefertigkeitswert]()
+          liturgien = Map[Liturgie, Liturgiefertigkeitswert](),
+          rituale = Set(
+            Apport,
+            Bindung
+          )
         )
 
         assert(yaml.parser.parse(input).flatMap(_.as[Character]).toOption.value === expectedResult)
@@ -130,13 +136,14 @@ class CharacterParseSpec extends AnyWordSpec with ScalaCheckDrivenPropertyChecks
             Fernkampf(8),
             Initiative(15)
           ),
-          talente = Map[Talent, Talentwert](),
-          kampftalente = Map[Kampftalent, Kampftalentwert](),
-          zauber = Map[Zauber, Zauberfertigkeitswert](),
-          sonderfertigkeiten = Set[Sonderfertigkeit](),
-          vorteile = Set[Vorteil](),
-          nachteile = Set[Nachteil](),
-          liturgien = Map((Liturgie.Glueckssegen, Liturgiefertigkeitswert(7)))
+          talente = Map.empty[Talent, Talentwert],
+          kampftalente = Map.empty[Kampftalent, Kampftalentwert],
+          zauber = Map.empty[Zauber, Zauberfertigkeitswert],
+          sonderfertigkeiten = Set.empty[Sonderfertigkeit],
+          vorteile = Set.empty[Vorteil],
+          nachteile = Set.empty[Nachteil],
+          liturgien = Map((Liturgie.Glueckssegen, Liturgiefertigkeitswert(7))),
+          rituale = Set.empty[Ritual]
         )
 
         assert(yaml.parser.parse(input).flatMap(_.as[Character]).toOption.value === expectedResult)
