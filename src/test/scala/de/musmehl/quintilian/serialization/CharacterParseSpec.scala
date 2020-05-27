@@ -34,6 +34,7 @@ import de.musmehl.quintilian.character.talents.Talent.Sinnenschaerfe
 import de.musmehl.quintilian.character.talents.kampf.Kampftalent.Staebe
 import de.musmehl.quintilian.character.talents.kampf.{Kampftalent, Kampftalentwert}
 import de.musmehl.quintilian.character.talents.{Talent, Talentwert}
+import de.musmehl.quintilian.creatures.daemons.{Daemon, WahrerNameQualitaet}
 import de.musmehl.quintilian.liturgies.{Liturgie, Liturgiefertigkeitswert}
 import de.musmehl.quintilian.magic.spell.{Pentagramma, Zauber, Zauberfertigkeitswert}
 import de.musmehl.quintilian.rituals.Ritual
@@ -104,6 +105,10 @@ class CharacterParseSpec extends AnyWordSpec with ScalaCheckDrivenPropertyChecks
           rituale = Set(
             Apport,
             Bindung
+          ),
+          wahreNamen = Map(
+            (Daemon.Achorhobai, WahrerNameQualitaet(0)),
+            (Daemon.BrukhaKlah, WahrerNameQualitaet(7))
           )
         )
 
@@ -143,7 +148,8 @@ class CharacterParseSpec extends AnyWordSpec with ScalaCheckDrivenPropertyChecks
           vorteile = Set.empty[Vorteil],
           nachteile = Set.empty[Nachteil],
           liturgien = Map((Liturgie.Glueckssegen, Liturgiefertigkeitswert(7))),
-          rituale = Set.empty[Ritual]
+          rituale = Set.empty[Ritual],
+          wahreNamen = Map.empty[Daemon, WahrerNameQualitaet]
         )
 
         assert(yaml.parser.parse(input).flatMap(_.as[Character]).toOption.value === expectedResult)

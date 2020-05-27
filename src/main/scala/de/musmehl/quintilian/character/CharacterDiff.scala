@@ -23,6 +23,7 @@ import de.musmehl.quintilian.character.properties.{EigenschaftsDiff, EnergieDiff
 import de.musmehl.quintilian.character.skills.SonderfertigkeitenDiff
 import de.musmehl.quintilian.character.talents.TalentDiff
 import de.musmehl.quintilian.character.talents.kampf.KampftalenteDiff
+import de.musmehl.quintilian.creatures.daemons.WahrerNameDiff
 import de.musmehl.quintilian.liturgies.LiturgieDiff
 import de.musmehl.quintilian.magic.spell.ZauberDiff
 import de.musmehl.quintilian.rituals.RitualDiff
@@ -38,7 +39,8 @@ final case class CharacterDiff(
     vorteile: VorteilDiff = VorteilDiff.empty,
     nachteile: NachteilDiff = NachteilDiff.empty,
     liturgien: LiturgieDiff = LiturgieDiff.empty,
-    rituale: RitualDiff = RitualDiff.empty
+    rituale: RitualDiff = RitualDiff.empty,
+    wahreNamen: WahrerNameDiff = WahrerNameDiff.empty
 ) {
   def applyTo(character: Character): Character =
     character.copy(
@@ -52,7 +54,8 @@ final case class CharacterDiff(
       vorteile = vorteile.applyTo(character.vorteile),
       nachteile = nachteile.applyTo(character.nachteile),
       liturgien = liturgien.applyTo(character.liturgien),
-      rituale = rituale.applyTo(character.rituale)
+      rituale = rituale.applyTo(character.rituale),
+      wahreNamen = wahreNamen.applyTo(character.wahreNamen)
     )
 }
 

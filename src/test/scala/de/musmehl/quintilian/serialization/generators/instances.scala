@@ -27,6 +27,7 @@ import de.musmehl.quintilian.character.disadvantages.{Nachteil, NachteilDiff}
 import de.musmehl.quintilian.character.skills.{Sonderfertigkeit, SonderfertigkeitenDiff}
 import de.musmehl.quintilian.character.talents.kampf.{Kampftalent, KampftalenteDiff, Kampftalentwert, KampftalentwertDiff}
 import de.musmehl.quintilian.character.talents.{Talent, TalentDiff, Talentwert}
+import de.musmehl.quintilian.creatures.daemons.{Daemon, WahrerNameDiff, WahrerNameQualitaet}
 import de.musmehl.quintilian.liturgies.{Liturgie, LiturgieDiff, Liturgiefertigkeitswert}
 import de.musmehl.quintilian.magic.spell.{FlimFlamFunkel, Pentagramma, Zauber, ZauberDiff, Zauberfertigkeitswert}
 import de.musmehl.quintilian.rituals.{Ritual, RitualDiff}
@@ -254,6 +255,20 @@ object instances {
     remove <- genRituale
   } yield RitualDiff(add, remove.diff(add))
 
+  val genDaemon: Gen[Daemon] = Gen.oneOf[Daemon](
+    Daemon.Achorhobai,
+    Daemon.Agribaal,
+    Daemon.BrukhaKlah
+  )
+  val genWahrerNameQualitaet: Gen[WahrerNameQualitaet] = Gen.chooseNum(0, 7).map(WahrerNameQualitaet)
+  val genWahreNamen: Gen[Map[Daemon, WahrerNameQualitaet]] = Gen.mapOf(
+    for {
+      daemon              <- genDaemon
+      wahrerNameQualitaet <- genWahrerNameQualitaet
+    } yield (daemon, wahrerNameQualitaet)
+  )
+  val genWahrerNameDiff: Gen[WahrerNameDiff] = genWahreNamen.map(WahrerNameDiff(_))
+
   val genCharacter: Gen[Character] = for {
     eigenschaften      <- genEigenschaften
     energien           <- genEnergien
@@ -266,6 +281,7 @@ object instances {
     nachteile          <- genNachteile
     liturgien          <- genLiturgien
     rituale            <- genRituale
+    wahreNamen         <- genWahreNamen
   } yield Character(
     eigenschaften,
     energien,
@@ -277,7 +293,8 @@ object instances {
     vorteile,
     nachteile,
     liturgien,
-    rituale
+    rituale,
+    wahreNamen
   )
 
   val genCharacterDiff: Gen[CharacterDiff] = for {
@@ -292,6 +309,7 @@ object instances {
     nachteile          <- genNachteilDiff
     liturgien          <- genLiturgieDiff
     rituale            <- genRitualDiff
+    wahreNamen         <- genWahrerNameDiff
   } yield CharacterDiff(
     eigenschaften,
     energien,
@@ -303,7 +321,8 @@ object instances {
     vorteile,
     nachteile,
     liturgien,
-    rituale
+    rituale,
+    wahreNamen
   )
 
 }

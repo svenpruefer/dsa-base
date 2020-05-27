@@ -36,6 +36,7 @@ import de.musmehl.quintilian.magic.spell.{BoeserBlick, FlimFlamFunkel, OculusAst
 import io.circe._
 import io.circe.syntax._
 import cats.implicits._
+import de.musmehl.quintilian.creatures.daemons.{Daemon, WahrerNameDiff, WahrerNameQualitaet}
 import de.musmehl.quintilian.liturgies
 import de.musmehl.quintilian.liturgies.Liturgie.{Friedenslied, Glueckssegen}
 import de.musmehl.quintilian.liturgies.{Liturgie, LiturgieDiff, Liturgiefertigkeitswert}
@@ -383,6 +384,28 @@ object instances {
       remove <- c.getOrElse[Set[Ritual]]("remove")(Set.empty[Ritual])
     } yield RitualDiff(add = add, remove = remove)
 
+  implicit val encodeDaemon: KeyEncoder[Daemon] = {
+    case Daemon.Achorhobai => "Achorhobai"
+    case Daemon.Agribaal   => "Agribaal"
+    case Daemon.BrukhaKlah => "Brukha'Klah"
+  }
+  implicit val decodeDaemon: KeyDecoder[Daemon] = {
+    case "Achorhobai"  => Some(Daemon.Achorhobai)
+    case "Agribaal"    => Some(Daemon.Agribaal)
+    case "Brukha'Klah" => Some(Daemon.BrukhaKlah)
+  }
+
+  implicit val encodeWahrerNameQualitaet: Encoder[WahrerNameQualitaet] = Encoder.encodeInt.contramap(_.value)
+  implicit val decodeWahrerNameQualitaet: Decoder[WahrerNameQualitaet] =
+    Decoder.decodeInt.map(WahrerNameQualitaet)
+
+  implicit val encodeWahrerNameDiff: Encoder[WahrerNameDiff] = Encoder
+    .encodeMap[Daemon, WahrerNameQualitaet](encodeDaemon, encodeWahrerNameQualitaet)
+    .contramap[WahrerNameDiff](_.diffs)
+    .mapJson(_.deepDropNullValues)
+  implicit val decodeWahrerNameDiff: Decoder[WahrerNameDiff] =
+    Decoder.decodeMap[Daemon, WahrerNameQualitaet](decodeDaemon, decodeWahrerNameQualitaet).map(WahrerNameDiff(_))
+
   implicit val encodeCharacter: Encoder[Character] = (character: Character) =>
     Json.obj(
       ("Eigenschaften", character.eigenschaften.asJson),
@@ -395,7 +418,8 @@ object instances {
       ("Vorteile", character.vorteile.asJson),
       ("Nachteile", character.nachteile.asJson),
       ("Liturgien", character.liturgien.asJson),
-      ("Rituale", character.rituale.asJson)
+      ("Rituale", character.rituale.asJson),
+      ("Wahre Namen", character.wahreNamen.asJson)
     )
 
   implicit val decodeCharacter: Decoder[Character] = (c: HCursor) =>
@@ -411,6 +435,7 @@ object instances {
       nachteile          <- c.downField("Nachteile").as[Set[Nachteil]]
       liturgien          <- c.downField("Liturgien").as[Map[Liturgie, Liturgiefertigkeitswert]]
       rituale            <- c.downField("Rituale").as[Set[Ritual]]
+      wahreNamen         <- c.downField("Wahre Namen").as[Map[Daemon, WahrerNameQualitaet]]
     } yield Character(
       eigenschaften = eigenschaften,
       energien = energien,
@@ -422,7 +447,8 @@ object instances {
       vorteile = vorteile,
       nachteile = nachteile,
       liturgien = liturgien,
-      rituale = rituale
+      rituale = rituale,
+      wahreNamen = wahreNamen
     )
 
   implicit val encodeCharacterDiff: Encoder[CharacterDiff] = (characterDiff: CharacterDiff) =>
@@ -438,7 +464,8 @@ object instances {
         ("Vorteile", characterDiff.vorteile.asJson),
         ("Nachteile", characterDiff.nachteile.asJson),
         ("Liturgien", characterDiff.liturgien.asJson),
-        ("Rituale", characterDiff.rituale.asJson)
+        ("Rituale", characterDiff.rituale.asJson),
+        ("Wahre Namen", characterDiff.wahreNamen.asJson)
       )
       .dropNullValues
 
@@ -455,6 +482,7 @@ object instances {
       nachteile          <- c.getOrElse[NachteilDiff]("Nachteile")(NachteilDiff.empty)
       liturgien          <- c.getOrElse[LiturgieDiff]("Liturgien")(LiturgieDiff.empty)
       rituale            <- c.getOrElse[RitualDiff]("Rituale")(RitualDiff.empty)
+      wahreNamen         <- c.getOrElse[WahrerNameDiff]("Wahre Namen")(WahrerNameDiff.empty)
     } yield CharacterDiff(
       eigenschaften = eigenschaften,
       energien = energien,
@@ -466,6 +494,7 @@ object instances {
       vorteile = vorteile,
       nachteile = nachteile,
       liturgien = liturgien,
-      rituale = rituale
+      rituale = rituale,
+      wahreNamen = wahreNamen
     )
 }
